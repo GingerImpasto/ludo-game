@@ -20,36 +20,12 @@
   height: 100%;
 }
 
-.color-triangle {
+.color-arrow.red {
   position: absolute;
   width: 50%;
   height: 50%;
-}
-
-.color-triangle.red {
   top: 0;
   left: 0;
   background-color: #ff3333;
-  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
-}
-
-.color-triangle.green {
-  top: 0;
-  right: 0;
-  background-color: #33cc33;
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
-}
-
-.color-triangle.yellow {
-  bottom: 0;
-  right: 0;
-  background-color: #ffcc00;
-  clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
-}
-
-.color-triangle.blue {
-  bottom: 0;
-  left: 0;
-  background-color: #3366ff;
-  clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
 }

@@ -6,10 +6,7 @@ const BoardCenter: React.FC = () => {
   return (
     <div className="center-square">
       <div className="center-colors">
-        <div className="color-triangle red"></div>
-        <div className="color-triangle green"></div>
-        <div className="color-triangle yellow"></div>
-        <div className="color-triangle blue"></div>
+        <div className="color-arrow red"></div>
       </div>
     </div>
   );
