@@ -1,6 +1,8 @@
+// LudoBoard.tsx
 import React from 'react';
 import './LudoBoard.css';
 import Base from './Base';
+import BoardCenter from './BoardCenter';
 
 interface LudoBoardProps {
   diceValue: number;
@@ -10,8 +12,8 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
   return (
     <div className="ludo-container">
       <div className="ludo-board">
-        {/* Center of the board */}
-        <div className="center-square"></div>
+        {/* Center of the board - now using BoardCenter component */}
+        <BoardCenter />
         
         {/* Player bases (home areas) */}
         <Base color="red" />
