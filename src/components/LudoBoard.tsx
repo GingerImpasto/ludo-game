@@ -28,11 +28,6 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
         <div className="safe-zone green"></div>
         <div className="safe-zone yellow"></div>
         <div className="safe-zone blue"></div>
-        
-        <div className="star-zone s1"></div>
-        <div className="star-zone s2"></div>
-        <div className="star-zone s3"></div>
-        <div className="star-zone s4"></div>
       </div>
       
       <div className="game-controls">

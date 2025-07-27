@@ -142,21 +142,6 @@
   background-color: #3366ff;
 }
 
-.star-zone {
-  position: absolute;
-  width: 8%;
-  height: 8%;
-  background-color: white;
-  clip-path: polygon(
-    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
-  );
-}
-
-.s1 { top: 44%; left: 6%; }
-.s2 { top: 6%; left: 44%; }
-.s3 { top: 44%; right: 6%; }
-.s4 { bottom: 6%; left: 44%; }
-
 .game-controls {
   margin-top: 20px;
 }
