@@ -8,8 +8,6 @@ interface LudoBoardProps {
 const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
   return (
     <div className="ludo-container">
-      <h1>Ludo Game</h1>
-      
       <div className="ludo-board">
         {/* Center of the board */}
         <div className="center-square"></div>
