@@ -1,5 +1,6 @@
 import React from 'react';
 import './LudoBoard.css';
+import Base from './Base';
 
 interface LudoBoardProps {
   diceValue: number;
@@ -13,43 +14,21 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
         <div className="center-square"></div>
         
         {/* Player bases (home areas) */}
-        <div className="base red">
-          <div className="pawn-position p1"></div>
-          <div className="pawn-position p2"></div>
-          <div className="pawn-position p3"></div>
-          <div className="pawn-position p4"></div>
-        </div>
-        <div className="base green">
-          <div className="pawn-position p1"></div>
-          <div className="pawn-position p2"></div>
-          <div className="pawn-position p3"></div>
-          <div className="pawn-position p4"></div>
-        </div>
-        <div className="base yellow">
-          <div className="pawn-position p1"></div>
-          <div className="pawn-position p2"></div>
-          <div className="pawn-position p3"></div>
-          <div className="pawn-position p4"></div>
-        </div>
-        <div className="base blue">
-          <div className="pawn-position p1"></div>
-          <div className="pawn-position p2"></div>
-          <div className="pawn-position p3"></div>
-          <div className="pawn-position p4"></div>
-        </div>
+        <Base color="red" />
+        <Base color="green" />
+        <Base color="yellow" />
+        <Base color="blue" />
         
-        {/* Path cells */}
+        {/* Rest of the board remains the same */}
         {Array.from({ length: 52 }).map((_, index) => (
           <div key={`cell-${index}`} className={`path-cell cell-${index}`}></div>
         ))}
         
-        {/* Safe zones */}
         <div className="safe-zone red"></div>
         <div className="safe-zone green"></div>
         <div className="safe-zone yellow"></div>
         <div className="safe-zone blue"></div>
         
-        {/* Star zones */}
         <div className="star-zone s1"></div>
         <div className="star-zone s2"></div>
         <div className="star-zone s3"></div>
