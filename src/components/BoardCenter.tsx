@@ -7,6 +7,9 @@ const BoardCenter: React.FC = () => {
     <div className="center-square">
       <div className="center-colors">
         <div className="color-arrow red"></div>
+        <div className="color-arrow green"></div>
+        <div className="color-arrow yellow"></div>
+        <div className="color-arrow blue"></div>
       </div>
     </div>
   );

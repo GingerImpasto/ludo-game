@@ -1,12 +1,12 @@
 /* BoardCenter.css */
 .center-square {
   position: absolute;
-  width: 20%;  /* Changed from 30% */
-  height: 20%; /* Changed from 30% */
+  width: 20%;
+  height: 20%;
   background-color: white;
   border-radius: 10px;
-  top: 40%;    /* Adjusted from 35% */
-  left: 40%;   /* Adjusted from 35% */
+  top: 40%;
+  left: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,12 +20,30 @@
   height: 100%;
 }
 
-.color-arrow.red {
+.color-arrow {
   position: absolute;
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
+}
+
+.color-arrow.red {
   background-color: #ff3333;
-  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+  clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+}
+
+.color-arrow.green {
+  background-color: #33cc33;
+  clip-path: polygon(100% 0%, 50% 50%, 0% 0%);
+}
+
+.color-arrow.yellow {
+  background-color: #ffcc00;
+  clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
+}
+
+.color-arrow.blue {
+  background-color: #3366ff;
+  clip-path: polygon(0% 100%, 50% 50%, 100% 100%);
 }
