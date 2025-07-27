@@ -74,8 +74,8 @@
 
 .pawn-position {
   position: relative;
-  width: 60%;
-  height: 60%;
+  width: 40%;
+  height: 40%;
   border-radius: 50%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   z-index: 1;
