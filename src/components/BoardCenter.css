@@ -1,12 +1,12 @@
 /* BoardCenter.css */
 .center-square {
   position: absolute;
-  width: 40%;
-  height: 40%;
+  width: 30%;
+  height: 30%;
   background-color: white;
   border-radius: 10px;
-  top: 30%;
-  left: 30%;
+  top: 35%;
+  left: 35%;
   display: flex;
   justify-content: center;
   align-items: center;
