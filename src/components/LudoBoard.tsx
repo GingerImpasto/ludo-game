@@ -21,11 +21,7 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
         <Base color="yellow" />
         <Base color="blue" />
         
-        {/* Rest of the board remains the same */}
-        {Array.from({ length: 52 }).map((_, index) => (
-          <div key={`cell-${index}`} className={`path-cell cell-${index}`}></div>
-        ))}
-        
+        {/* Safe zones */}
         <div className="safe-zone red"></div>
         <div className="safe-zone green"></div>
         <div className="safe-zone yellow"></div>
