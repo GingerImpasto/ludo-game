@@ -1,135 +1,24 @@
-.ludo-container {
+.app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
   padding: 20px;
+  background-color: #f5f5f5;
 }
 
-.ludo-board {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  background-color: #f0f0f0;
-  border: 2px solid #333;
-  margin: 20px auto;
-}
-
-.center-square {
-  position: absolute;
-  width: 40%;
-  height: 40%;
-  background-color: white;
-  border: 2px solid #333;
-  top: 30%;
-  left: 30%;
-}
-
-.base {
-  position: absolute;
-  width: 30%;
-  height: 30%;
-  border: 2px solid #333;
-}
-
-.base.red {
-  top: 0;
-  left: 0;
-  background-color: #ffcccc;
-}
-
-.base.green {
-  top: 0;
-  right: 0;
-  background-color: #ccffcc;
-}
-
-.base.yellow {
-  bottom: 0;
-  right: 0;
-  background-color: #ffffcc;
-}
-
-.base.blue {
-  bottom: 0;
-  left: 0;
-  background-color: #ccccff;
-}
-
-.path {
-  position: absolute;
-  background-color: white;
-  border: 1px solid #999;
-}
-
-.path.horizontal {
-  height: 10%;
-  width: 60%;
-  left: 20%;
-}
-
-.path.horizontal.top {
-  top: 15%;
-}
-
-.path.horizontal.bottom {
-  bottom: 15%;
-}
-
-.path.vertical {
-  width: 10%;
-  height: 60%;
-  top: 20%;
-}
-
-.path.vertical.left {
-  left: 15%;
-}
-
-.path.vertical.right {
-  right: 15%;
-}
-
-.safe-zone {
-  position: absolute;
-  width: 6%;
-  height: 6%;
-  border-radius: 50%;
-}
-
-.safe-zone.red {
-  background-color: red;
-  top: 25%;
-  left: 25%;
-}
-
-.safe-zone.green {
-  background-color: green;
-  top: 25%;
-  right: 25%;
-}
-
-.safe-zone.yellow {
-  background-color: yellow;
-  bottom: 25%;
-  right: 25%;
-}
-
-.safe-zone.blue {
-  background-color: blue;
-  bottom: 25%;
-  left: 25%;
-}
-
-.dice {
-  padding: 10px 20px;
+.dice-button {
+  padding: 12px 24px;
   font-size: 18px;
   background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
 }
 
-.dice:hover {
+.dice-button:hover {
   background-color: #45a049;
 }
