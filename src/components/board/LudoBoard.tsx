@@ -1,4 +1,3 @@
-// LudoBoard.tsx
 import React from "react";
 import "./LudoBoard.css";
 import Base from "./Base";
@@ -7,6 +6,7 @@ import LeftArea from "./LeftArea";
 import RightArea from "./RightArea";
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
+import DiceControls from "../game/DiceControls";
 
 interface LudoBoardProps {
   diceValue: number;
@@ -51,13 +51,7 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue, rollDice }) => {
         </div>
       </div>
 
-      <div className="game-controls">
-        <h3 className="dice-label">Current Roll</h3>
-        <div className="dice-value">{diceValue}</div>
-        <button onClick={rollDice} className="dice-button">
-          Roll Dice
-        </button>
-      </div>
+      <DiceControls diceValue={diceValue} rollDice={rollDice} />
     </div>
   );
 };
