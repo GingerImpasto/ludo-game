@@ -1,4 +1,4 @@
-/* Base.css - Styles for the Base component */
+/* Base.css - Styles with colored pawn circles and images */
 .base {
   position: relative;
   width: 100%;
@@ -25,6 +25,7 @@
   transform: translate(-50%, -50%);
 }
 
+/* Base color styles */
 .base.red {
   background-color: #ff3333;
   border-top-left-radius: 0;
@@ -45,6 +46,7 @@
   border-bottom-left-radius: 0;
 }
 
+/* Common pawn position styles */
 .pawn-position {
   position: relative;
   width: 40%;
@@ -52,9 +54,44 @@
   border-radius: 50%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   z-index: 1;
-  background-color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   justify-self: center;
   align-self: center;
+}
+
+/* Pawn images with colored backgrounds */
+.base.red .pawn-position {
+  background-color: #ff3333;
+  background-image: url('/ludo_red.webp');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.base.green .pawn-position {
+  background-color: #33cc33;
+  background-image: url('/ludo_green.webp');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.base.yellow .pawn-position {
+  background-color: #ffcc00;
+  background-image: url('/ludo_yellow.webp');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.base.blue .pawn-position {
+  background-color: #3366ff;
+  background-image: url('/ludo_blue.webp');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Responsive adjustments */
