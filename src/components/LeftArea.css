@@ -58,6 +58,17 @@
   background-color: #e0e0e0;
 }
 
+/* Red cells for 2, and 8-12 */
+.left-area-cell:nth-child(2),
+.left-area-cell:nth-child(8),
+.left-area-cell:nth-child(9),
+.left-area-cell:nth-child(10),
+.left-area-cell:nth-child(11),
+.left-area-cell:nth-child(12) {
+  background-color: #ff0000;
+  color: white;
+}
+
 /* Highlight cell example */
 .left-area-cell.highlight {
   background-color: #ffeb3b;

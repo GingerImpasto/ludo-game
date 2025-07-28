@@ -58,8 +58,7 @@
   background-color: #e0e0e0;
 }
 
-/* Highlight cell example */
+/* Highlight cell - simplified to just yellow background */
 .right-area-cell.highlight {
   background-color: #ffeb3b;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
 }

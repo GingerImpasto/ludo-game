@@ -1,5 +1,5 @@
 import React from "react";
-import "./RightArea.css"; // We'll create this CSS file
+import "./RightArea.css";
 
 const RightArea: React.FC = () => {
   // Create a 6x3 grid with numbers 19-36 (continuing from LeftArea)
@@ -9,7 +9,12 @@ const RightArea: React.FC = () => {
     <div className="right-area">
       <div className="right-area-grid">
         {gridItems.map((number) => (
-          <div key={number} className="right-area-cell">
+          <div
+            key={number}
+            className={`right-area-cell ${
+              (number >= 25 && number <= 29) || number === 35 ? "highlight" : ""
+            }`}
+          >
             {number}
           </div>
         ))}
