@@ -158,16 +158,6 @@
 .cell-0 { top: 6%; left: 44%; }
 .cell-1 { top: 6%; left: 36%; }
 
-/* Safe Zones */
-.safe-zone {
-  position: absolute;
-  width: 12%;
-  height: 12%;
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
 /* Game Controls */
 .game-controls {
   display: flex;
@@ -197,6 +187,23 @@
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.dice-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.dice-button:hover {
+  background-color: #45a049;
 }
 
 /* Responsive adjustments */
@@ -236,20 +243,4 @@
     width: 35%;
     height: 35%;
   }
-}
-.dice-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: background-color 0.3s;
-  width: 100%;
-}
-
-.dice-button:hover {
-  background-color: #45a049;
 }
