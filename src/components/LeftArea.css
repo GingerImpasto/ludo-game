@@ -7,20 +7,20 @@
   padding: 0;
   margin: 0;
   overflow: hidden;
-  width: 100%; /* Ensure full width */
-  height: 100%; /* Ensure full height */
-  position: relative; /* For absolute positioning if needed */
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .left-area-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr)); /* Fix column sizing */
-  grid-template-rows: repeat(3, minmax(0, 1fr)); /* Fix row sizing */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
   width: 100%;
   height: 100%;
-  min-width: 0; /* Allow grid to shrink below default minimum */
-  min-height: 0; /* Allow grid to shrink below default minimum */
-  gap: 1px; /* Minimal gap for cell separation */
+  min-width: 0;
+  min-height: 0;
+  gap: 1px;
   margin: 0;
   padding: 0;
 }
@@ -30,16 +30,16 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  border: none; /* Remove borders if using gap */
-  font-size: min(2vw, 1.5rem); /* Responsive font size */
+  border: none;
+  font-size: min(2vw, 1.5rem);
   font-weight: bold;
   color: #333;
-  min-width: 0; /* Allow cell content to shrink */
-  min-height: 0; /* Allow cell content to shrink */
-  overflow: hidden; /* Prevent content overflow */
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* Alternating cell colors */
+/* Alternating cell colors - now based on 6 columns */
 .left-area-cell:nth-child(12n+1),
 .left-area-cell:nth-child(12n+3),
 .left-area-cell:nth-child(12n+5),
@@ -58,18 +58,12 @@
   background-color: #e0e0e0;
 }
 
-/* Red cells for 2, and 8-12 */
-.left-area-cell:nth-child(2),
-.left-area-cell:nth-child(8),
-.left-area-cell:nth-child(9),
-.left-area-cell:nth-child(10),
-.left-area-cell:nth-child(11),
-.left-area-cell:nth-child(12) {
+/* Red cell class */
+.left-area-cell.red-cell {
   background-color: #ff0000;
   color: white;
 }
 
-/* Highlight cell example */
 .left-area-cell.highlight {
   background-color: #ffeb3b;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.2);

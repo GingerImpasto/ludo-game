@@ -2,8 +2,12 @@ import React from "react";
 import "./BottomArea.css";
 
 const BottomArea: React.FC = () => {
-  const gridItems = Array.from({ length: 18 }, (_, i) => i + 55);
-  const blueCells = [56, 59, 62, 65, 67, 68];
+  const gridItems = [
+    44, 72, 32, 43, 71, 33, 42, 70, 34, 41, 69, 35, 40, 68, 36, 39, 38, 37,
+  ];
+
+  // Blue cells: 40, 68, 69, 70, 71, 72
+  const blueCells = [40, 68, 69, 70, 71, 72];
 
   return (
     <div className="bottom-area">

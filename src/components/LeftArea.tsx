@@ -1,18 +1,33 @@
 import React from "react";
-import "./LeftArea.css"; // Changed import to use the new CSS file
+import "./LeftArea.css";
 
 const LeftArea: React.FC = () => {
-  // Create a 6x3 grid with numbers 1-18
-  const gridItems = Array.from({ length: 18 }, (_, i) => i + 1);
+  // Create the specific grid layout
+  const gridLayout = [
+    [52, 1, 2, 3, 4, 5],
+    [51, 53, 54, 55, 56, 57],
+    [50, 49, 48, 47, 46, 45],
+  ];
+
+  // Numbers that should be red
+  const redNumbers = [1, 53, 54, 55, 56, 57];
 
   return (
     <div className="left-area">
       <div className="left-area-grid">
-        {gridItems.map((number) => (
-          <div key={number} className="left-area-cell">
-            {number}
-          </div>
-        ))}
+        {gridLayout.flatMap((row, rowIndex) =>
+          row.map((number, colIndex) => {
+            const isRed = redNumbers.includes(number);
+            return (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={`left-area-cell ${isRed ? "red-cell" : ""}`}
+              >
+                {number}
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
