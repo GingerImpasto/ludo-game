@@ -1,3 +1,4 @@
+// LudoBoard.tsx
 import React from "react";
 import "./LudoBoard.css";
 import Base from "./Base";
@@ -7,16 +8,20 @@ import RightArea from "./RightArea";
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
 import DiceControls from "../game/DiceControls";
+import { useGame } from "../../context/GameContext";
 
-interface LudoBoardProps {
-  diceValue: number;
-  rollDice: () => void;
-}
+const LudoBoard: React.FC = () => {
+  const { state } = useGame();
+  const { currentPlayer } = state;
 
-const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue, rollDice }) => {
   return (
     <div className="ludo-container">
       <div className="ludo-board">
+        {/* Current player indicator */}
+        <div className="current-player-indicator" data-player={currentPlayer}>
+          {currentPlayer.toUpperCase()}'s Turn
+        </div>
+
         {/* Center of the board */}
         <div className="board-center">
           <BoardCenter />
@@ -51,7 +56,7 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue, rollDice }) => {
         </div>
       </div>
 
-      <DiceControls diceValue={diceValue} rollDice={rollDice} />
+      <DiceControls />
     </div>
   );
 };

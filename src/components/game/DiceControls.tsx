@@ -1,16 +1,15 @@
+// DiceControls.tsx
 import React from "react";
 import "./DiceControls.css";
+import { useGame } from "../../context/GameContext";
 
-interface DiceControlsProps {
-  diceValue: number;
-  rollDice: () => void;
-}
+const DiceControls: React.FC = () => {
+  const { state, rollDice } = useGame();
 
-const DiceControls: React.FC<DiceControlsProps> = ({ diceValue, rollDice }) => {
   return (
     <div className="game-controls">
       <h3 className="dice-label">Current Roll</h3>
-      <div className="dice-value">{diceValue}</div>
+      <div className="dice-value">{state.diceValue}</div>
       <button onClick={rollDice} className="dice-button">
         Roll Dice
       </button>
