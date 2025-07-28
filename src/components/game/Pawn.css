@@ -11,7 +11,8 @@
   position: relative;
 }
 
-.pawn::after {
+/* White circle effect (only when selected AND not disabled) */
+.pawn-selected:not(.pawn-disabled)::after {
   content: '';
   position: absolute;
   width: 60%;
@@ -48,40 +49,38 @@
 
 /* Position styles */
 .pawn-base {
-  /* Styles for pawns in base */
   box-shadow: 0 0 5px var(--shadow-color);
 }
 
 .pawn-board {
-  /* Styles for pawns on the board */
   box-shadow: 0 0 8px var(--shadow-color);
   transform: scale(0.9);
 }
 
 .pawn-home {
-  /* Styles for pawns that reached home */
   box-shadow: 0 0 10px gold;
 }
 
-/* State styles */
-.pawn-selected {
+/* Selected state (unless disabled) */
+.pawn-selected:not(.pawn-disabled) {
   transform: scale(1.1);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  z-index: 1;
 }
 
+/* Disabled state (applies even if selected) */
 .pawn-disabled {
-  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.pawn:hover:not(.pawn-disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Adjust for tablets and smaller devices */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .pawn {
     background-size: 60%;
+  }
+  
+  .pawn-selected:not(.pawn-disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
   }
 }
