@@ -1,7 +1,7 @@
 // TopArea.tsx
 import React from "react";
 import "./TopArea.css";
-import { gridLayout, specialCells } from "../config/gameConfig";
+import { gridLayout, specialCells } from "../../config/gameConfig";
 
 const TopArea: React.FC = () => {
   const gridItems = gridLayout.topArea.flat();

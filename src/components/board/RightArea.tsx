@@ -1,7 +1,7 @@
 // RightArea.tsx
 import React from "react";
 import "./RightArea.css";
-import { gridLayout, specialCells } from "../config/gameConfig";
+import { gridLayout, specialCells } from "../../config/gameConfig";
 
 const RightArea: React.FC = () => {
   const gridItems = gridLayout.rightArea.flat();

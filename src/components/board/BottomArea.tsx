@@ -1,7 +1,7 @@
 // BottomArea.tsx
 import React from "react";
 import "./BottomArea.css";
-import { gridLayout, specialCells } from "../config/gameConfig";
+import { gridLayout, specialCells } from "../../config/gameConfig";
 
 const BottomArea: React.FC = () => {
   return (

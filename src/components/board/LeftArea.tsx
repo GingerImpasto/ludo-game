@@ -1,6 +1,6 @@
 import React from "react";
 import "./LeftArea.css";
-import { gridLayout, specialCells } from "../config/gameConfig";
+import { gridLayout, specialCells } from "../../config/gameConfig";
 
 const LeftArea: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 // App.tsx
 import { useState } from "react";
-import LudoBoard from "./components/LudoBoard";
+import LudoBoard from "./components/board/LudoBoard";
 import "./App.css";
 
 function App() {
