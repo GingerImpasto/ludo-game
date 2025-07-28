@@ -1,4 +1,3 @@
-// Update LudoBoard.tsx
 import React from 'react';
 import './LudoBoard.css';
 import Base from './Base';
@@ -23,12 +22,6 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
         <Base color="green" />
         <Base color="yellow" />
         <Base color="blue" />
-        
-        {/* Safe zones */}
-        <div className="safe-zone red"></div>
-        <div className="safe-zone green"></div>
-        <div className="safe-zone yellow"></div>
-        <div className="safe-zone blue"></div>
       </div>
       
       <div className="game-controls">
