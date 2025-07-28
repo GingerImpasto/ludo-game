@@ -1,0 +1,65 @@
+/* LeftArea.css */
+.left-area {
+  grid-area: left;
+  background-color: #888;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  width: 100%; /* Ensure full width */
+  height: 100%; /* Ensure full height */
+  position: relative; /* For absolute positioning if needed */
+}
+
+.left-area-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr)); /* Fix column sizing */
+  grid-template-rows: repeat(3, minmax(0, 1fr)); /* Fix row sizing */
+  width: 100%;
+  height: 100%;
+  min-width: 0; /* Allow grid to shrink below default minimum */
+  min-height: 0; /* Allow grid to shrink below default minimum */
+  gap: 1px; /* Minimal gap for cell separation */
+  margin: 0;
+  padding: 0;
+}
+
+.left-area-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none; /* Remove borders if using gap */
+  font-size: min(2vw, 1.5rem); /* Responsive font size */
+  font-weight: bold;
+  color: #333;
+  min-width: 0; /* Allow cell content to shrink */
+  min-height: 0; /* Allow cell content to shrink */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+/* Alternating cell colors */
+.left-area-cell:nth-child(12n+1),
+.left-area-cell:nth-child(12n+3),
+.left-area-cell:nth-child(12n+5),
+.left-area-cell:nth-child(12n+7),
+.left-area-cell:nth-child(12n+9),
+.left-area-cell:nth-child(12n+11) {
+  background-color: #f0f0f0;
+}
+
+.left-area-cell:nth-child(12n+2),
+.left-area-cell:nth-child(12n+4),
+.left-area-cell:nth-child(12n+6),
+.left-area-cell:nth-child(12n+8),
+.left-area-cell:nth-child(12n+10),
+.left-area-cell:nth-child(12n+12) {
+  background-color: #e0e0e0;
+}
+
+/* Highlight cell example */
+.left-area-cell.highlight {
+  background-color: #ffeb3b;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
