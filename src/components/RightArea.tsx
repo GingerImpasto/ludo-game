@@ -1,8 +1,21 @@
 import React from "react";
-import "./LudoBoard.css";
+import "./RightArea.css"; // We'll create this CSS file
 
 const RightArea: React.FC = () => {
-  return <div className="right-area"></div>;
+  // Create a 6x3 grid with numbers 19-36 (continuing from LeftArea)
+  const gridItems = Array.from({ length: 18 }, (_, i) => i + 19);
+
+  return (
+    <div className="right-area">
+      <div className="right-area-grid">
+        {gridItems.map((number) => (
+          <div key={number} className="right-area-cell">
+            {number}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default RightArea;
