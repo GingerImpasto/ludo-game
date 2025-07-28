@@ -1,32 +1,49 @@
-/* LudoBoard.css */
+/* LudoBoard.css - Grid Layout Version */
 .ludo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
+  background-color: #f0f0f0;
+  padding: 0; /* Remove padding to maximize space */
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .ludo-board {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100vmin; /* Use vmin to ensure it fits both dimensions */
+  height: 100vmin; /* Use vmin to ensure it fits both dimensions */
   max-width: 100vh;
   max-height: 100vw;
+  aspect-ratio: 1/1;
   background-color: #333;
-  margin: 0 auto;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 35% 30% 35%;
+  grid-template-rows: 35% 30% 35%;
+  grid-template-areas:
+    "red    top    green"
+    "left center right"
+    "blue bottom yellow";
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Base Styles */
 .base {
-  position: absolute;
-  width: 35%;
-  height: 35%;
-  border-radius: 10px;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 15px;
   padding: 20px;
+  box-sizing: border-box;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -44,33 +61,75 @@
 }
 
 .base.red {
-  top: 0;
-  left: 0;
+  grid-area: red;
   background-color: #ff3333;
   border-top-left-radius: 0;
 }
 
 .base.green {
-  top: 0;
-  right: 0;
+  grid-area: green;
   background-color: #33cc33;
   border-top-right-radius: 0;
 }
 
 .base.yellow {
-  bottom: 0;
-  right: 0;
+  grid-area: yellow;
   background-color: #ffcc00;
   border-bottom-right-radius: 0;
 }
 
 .base.blue {
-  bottom: 0;
-  left: 0;
+  grid-area: blue;
   background-color: #3366ff;
   border-bottom-left-radius: 0;
 }
 
+/* Center Area */
+.board-center {
+  grid-area: center;
+  background-color: white;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px; /* Match BoardCenter's square style */
+}
+
+/* Path Areas */
+.path-area {
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.left-area {
+  grid-area: left;
+  background-color: #888;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.right-area {
+  grid-area: right;
+  background-color: #888;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.top-area {
+  grid-area: top;
+  background-color: #888;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.bottom-area {
+  grid-area: bottom;
+  background-color: #888;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Pawn Positions */
 .pawn-position {
   position: relative;
   width: 40%;
@@ -83,6 +142,7 @@
   align-self: center;
 }
 
+/* Path Cells */
 .path-cell {
   position: absolute;
   background-color: white;
@@ -91,65 +151,51 @@
   height: 8%;
 }
 
-/* Positions for all 52 path cells would be defined here */
+/* Example path cell positions - you'll need to define all 52 */
 .cell-0 { top: 6%; left: 44%; }
 .cell-1 { top: 6%; left: 36%; }
-/* ... and so on for all 52 cells */
+/* ... continue for all path cells */
 
+/* Safe Zones */
+.safe-zone {
+  position: absolute;
+  width: 12%;
+  height: 12%;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Game Controls */
 .game-controls {
   margin-top: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .dice-value {
   font-size: 24px;
   font-weight: bold;
   color: #333;
+  text-align: center;
+  min-width: 200px;
 }
 
-.left-area {
-  position: absolute;
-  left: 0;
-  top: 40%;
-  width: 40%;
-  height: 20%;
-  background-color: #888;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.right-area {
-  position: absolute;
-  right: 0;
-  top: 40%;
-  width: 40%;
-  height: 20%;
-  background-color: #888;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-} 
-
-.top-area {
-  position: absolute;
-  top: 0;
-  left: 40%;
-  width: 20%;
-  height: 40%;
-  background-color: #888;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.bottom-area {
-  position: absolute;
-  bottom: 0;
-  left: 40%;
-  width: 20%;
-  height: 40%;
-  background-color: #888;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ludo-container {
+    padding: 10px;
+  }
+  
+  .base {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .pawn-position {
+    width: 35%;
+    height: 35%;
+  }
 }

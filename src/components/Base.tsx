@@ -1,8 +1,8 @@
-import React from 'react';
-import './LudoBoard.css';
+import React from "react";
+import "./Base.css";
 
 interface BaseProps {
-  color: 'red' | 'green' | 'yellow' | 'blue';
+  color: "red" | "green" | "yellow" | "blue";
 }
 
 const Base: React.FC<BaseProps> = ({ color }) => {
