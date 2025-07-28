@@ -1,16 +1,10 @@
+// RightArea.tsx
 import React from "react";
 import "./RightArea.css";
+import { gridLayout, specialCells } from "../config/gameConfig";
 
 const RightArea: React.FC = () => {
-  // Create the custom grid layout
-  const gridLayout = [
-    [19, 20, 21, 22, 23, 24], // Row 1
-    [67, 66, 65, 64, 63, 25], // Row 2
-    [31, 30, 29, 28, 27, 26], // Row 3
-  ];
-
-  // Flatten the array for rendering
-  const gridItems = gridLayout.flat();
+  const gridItems = gridLayout.rightArea.flat();
 
   return (
     <div className="right-area">
@@ -19,7 +13,7 @@ const RightArea: React.FC = () => {
           <div
             key={number}
             className={`right-area-cell ${
-              number === 27 || (number >= 63 && number <= 67) ? "highlight" : ""
+              specialCells.rightHighlight.includes(number) ? "highlight" : ""
             }`}
           >
             {number}
