@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import LudoBoard from './components/LudoBoard';
-import './App.css';
+// App.tsx
+import { useState } from "react";
+import LudoBoard from "./components/LudoBoard";
+import "./App.css";
 
 function App() {
   const [diceValue, setDiceValue] = useState(1);
@@ -11,10 +12,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <LudoBoard diceValue={diceValue} />
-      <button onClick={rollDice} className="dice-button">
-        Roll Dice
-      </button>
+      <LudoBoard diceValue={diceValue} rollDice={rollDice} />
     </div>
   );
 }

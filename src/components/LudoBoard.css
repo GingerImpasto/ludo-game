@@ -1,24 +1,25 @@
-/* LudoBoard.css - Grid Layout Version */
+/* LudoBoard.css - Updated Full Height with Side Controls */
 .ludo-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 100vw;
   height: 100vh;
   background-color: #f0f0f0;
-  padding: 0; /* Remove padding to maximize space */
+  padding: 20px;
   box-sizing: border-box;
   margin: 0;
+  gap: 20px;
 }
 
 .ludo-board {
   position: relative;
-  width: 100vmin; /* Use vmin to ensure it fits both dimensions */
-  height: 100vmin; /* Use vmin to ensure it fits both dimensions */
-  max-width: 100vh;
-  max-height: 100vw;
+  height: 100vh;
+  width: auto;
   aspect-ratio: 1/1;
+  max-width: calc(100vh - 40px);
+  max-height: calc(100vh - 40px);
   background-color: #333;
   margin: 0;
   display: grid;
@@ -34,6 +35,12 @@
 }
 
 /* Base Styles */
+.base-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .base {
   position: relative;
   width: 100%;
@@ -61,25 +68,21 @@
 }
 
 .base.red {
-  grid-area: red;
   background-color: #ff3333;
   border-top-left-radius: 0;
 }
 
 .base.green {
-  grid-area: green;
   background-color: #33cc33;
   border-top-right-radius: 0;
 }
 
 .base.yellow {
-  grid-area: yellow;
   background-color: #ffcc00;
   border-bottom-right-radius: 0;
 }
 
 .base.blue {
-  grid-area: blue;
   background-color: #3366ff;
   border-bottom-left-radius: 0;
 }
@@ -92,7 +95,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px; /* Match BoardCenter's square style */
+  border-radius: 10px;
 }
 
 /* Path Areas */
@@ -151,10 +154,9 @@
   height: 8%;
 }
 
-/* Example path cell positions - you'll need to define all 52 */
+/* Example path cell positions */
 .cell-0 { top: 6%; left: 44%; }
 .cell-1 { top: 6%; left: 36%; }
-/* ... continue for all path cells */
 
 /* Safe Zones */
 .safe-zone {
@@ -168,25 +170,61 @@
 
 /* Game Controls */
 .game-controls {
-  margin-top: 20px;
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  min-width: 150px;
 }
 
 .dice-value {
-  font-size: 24px;
+  font-size: 3rem;
   font-weight: bold;
   color: #333;
   text-align: center;
-  min-width: 200px;
+  margin: 10px 0;
+  min-width: 80px;
+}
+
+.dice-label {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .ludo-container {
+    flex-direction: column;
     padding: 10px;
+    gap: 10px;
+  }
+  
+  .ludo-board {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+  }
+  
+  .game-controls {
+    width: 100%;
+    padding: 15px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dice-value {
+    font-size: 2rem;
+    margin: 0;
   }
   
   .base {
@@ -198,4 +236,20 @@
     width: 35%;
     height: 35%;
   }
+}
+.dice-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.dice-button:hover {
+  background-color: #45a049;
 }
