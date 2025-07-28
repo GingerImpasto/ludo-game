@@ -1,4 +1,4 @@
-// LudoBoard.tsx
+// Update LudoBoard.tsx
 import React from 'react';
 import './LudoBoard.css';
 import Base from './Base';
@@ -14,6 +14,9 @@ const LudoBoard: React.FC<LudoBoardProps> = ({ diceValue }) => {
       <div className="ludo-board">
         {/* Center of the board - now using BoardCenter component */}
         <BoardCenter />
+        
+        {/* Left area between red and blue bases */}
+        <div className="left-area"></div>
         
         {/* Player bases (home areas) */}
         <Base color="red" />
