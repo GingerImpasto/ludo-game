@@ -1,4 +1,3 @@
-// GameContext.tsx
 import React, {
   createContext,
   useContext,
@@ -7,11 +6,35 @@ import React, {
   useMemo,
 } from "react";
 
+// Game configuration
+const START_POSITIONS = {
+  red: 1,
+  green: 14,
+  yellow: 27,
+  blue: 40,
+};
+
+const SAFE_SPOTS = [1, 9, 14, 22, 27, 35, 40, 48];
+const HOME_ENTRANCE = {
+  red: 51,
+  green: 12,
+  yellow: 25,
+  blue: 38,
+};
+const HOME_PATHS = {
+  red: [52, 53, 54, 55],
+  green: [13, 26, 39, 52],
+  yellow: [26, 39, 52, 13],
+  blue: [39, 52, 13, 26],
+};
+const WINNING_POSITION = 57;
+
 interface PlayerState {
   pawns: {
-    position: number; // position on the board
+    position: number;
     isHome: boolean;
     isFinished: boolean;
+    pathIndex?: number;
   }[];
 }
 
@@ -24,6 +47,7 @@ interface GameState {
     yellow: PlayerState;
     blue: PlayerState;
   };
+  hasRolledDice: boolean;
 }
 
 interface GameContextType {
@@ -34,6 +58,7 @@ interface GameContextType {
   selectPawn: (pawnIndex: number) => void;
   selectedPawn: number | null;
   activePawns: number[];
+  winner: string | null;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -44,85 +69,182 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<GameState>({
     diceValue: 1,
     currentPlayer: "red",
+    hasRolledDice: false,
     players: {
       red: {
-        pawns: Array(4).fill({ position: -1, isHome: true, isFinished: false }),
+        pawns: Array(4).fill({
+          position: -1,
+          isHome: true,
+          isFinished: false,
+          pathIndex: -1,
+        }),
       },
       green: {
-        pawns: Array(4).fill({ position: -1, isHome: true, isFinished: false }),
+        pawns: Array(4).fill({
+          position: -1,
+          isHome: true,
+          isFinished: false,
+          pathIndex: -1,
+        }),
       },
       yellow: {
-        pawns: Array(4).fill({ position: -1, isHome: true, isFinished: false }),
+        pawns: Array(4).fill({
+          position: -1,
+          isHome: true,
+          isFinished: false,
+          pathIndex: -1,
+        }),
       },
       blue: {
-        pawns: Array(4).fill({ position: -1, isHome: true, isFinished: false }),
+        pawns: Array(4).fill({
+          position: -1,
+          isHome: true,
+          isFinished: false,
+          pathIndex: -1,
+        }),
       },
     },
   });
 
   const [selectedPawn, setSelectedPawn] = useState<number | null>(null);
+  const [winner, setWinner] = useState<string | null>(null);
 
   const rollDice = useCallback(() => {
+    if (winner) return;
+
     const newValue = Math.floor(Math.random() * 6) + 1;
     setState((prev) => ({
       ...prev,
       diceValue: newValue,
+      hasRolledDice: true,
     }));
-    // Clear selection when rolling dice
     setSelectedPawn(null);
-  }, []);
+  }, [winner]);
 
   const activePawns = useMemo(() => {
+    if (winner) return [];
+
     const playerState = state.players[state.currentPlayer];
     return playerState.pawns
       .map((pawn, index) => ({ ...pawn, index }))
       .filter((pawn) => {
-        // Pawns at home can move out if dice is 6
+        // Can move out with a 6
         if (pawn.isHome) return state.diceValue === 6;
-        // Pawns on board can move if they're not finished
-        return !pawn.isFinished;
+
+        // Can't move if finished
+        if (pawn.isFinished) return false;
+
+        // In home path - can only move if exact dice available
+        if (pawn.position >= HOME_ENTRANCE[state.currentPlayer]) {
+          const remaining =
+            HOME_PATHS[state.currentPlayer].length - pawn.pathIndex!;
+          return state.diceValue <= remaining;
+        }
+
+        // Normal movement
+        return true;
       })
       .map((pawn) => pawn.index);
-  }, [state]);
+  }, [state, winner]);
+
+  const checkForWinner = useCallback(
+    (player: keyof GameState["players"]) => {
+      const allFinished = state.players[player].pawns.every(
+        (p) => p.isFinished
+      );
+      if (allFinished) {
+        setWinner(player);
+      }
+    },
+    [state.players]
+  );
 
   const movePawn = useCallback(
     (pawnIndex: number) => {
-      if (selectedPawn === null) return;
+      if (selectedPawn === null || !state.hasRolledDice || winner) return;
 
       setState((prev) => {
         const currentPlayer = prev.currentPlayer;
-        const updatedPawns = [...prev.players[currentPlayer].pawns];
+        const updatedPlayers = { ...prev.players };
+        const updatedPawns = [...updatedPlayers[currentPlayer].pawns];
         const pawn = updatedPawns[pawnIndex];
 
-        // Basic movement logic
-        const newPosition =
-          pawn.position === -1 ? 0 : pawn.position + prev.diceValue;
+        // Moving out of base
+        if (pawn.isHome && prev.diceValue === 6) {
+          updatedPawns[pawnIndex] = {
+            ...pawn,
+            position: START_POSITIONS[currentPlayer],
+            isHome: false,
+          };
+        }
+        // Moving in home path
+        else if (pawn.position >= HOME_ENTRANCE[currentPlayer]) {
+          const newPathIndex = (pawn.pathIndex || 0) + prev.diceValue;
+          if (newPathIndex < HOME_PATHS[currentPlayer].length) {
+            updatedPawns[pawnIndex] = {
+              ...pawn,
+              position: HOME_PATHS[currentPlayer][newPathIndex],
+              pathIndex: newPathIndex,
+            };
+          } else {
+            updatedPawns[pawnIndex] = {
+              ...pawn,
+              isFinished: true,
+              position: WINNING_POSITION,
+            };
+          }
+        }
+        // Normal movement
+        else {
+          let newPosition = pawn.position + prev.diceValue;
 
-        updatedPawns[pawnIndex] = {
-          ...pawn,
-          position: newPosition,
-          isHome: false,
+          // Handle board loop (52 total cells)
+          if (newPosition > 52) {
+            newPosition -= 52;
+          }
+
+          // Check if entering home path
+          if (newPosition === HOME_ENTRANCE[currentPlayer]) {
+            updatedPawns[pawnIndex] = {
+              ...pawn,
+              position: newPosition,
+              pathIndex: 0,
+            };
+          } else {
+            updatedPawns[pawnIndex] = {
+              ...pawn,
+              position: newPosition,
+            };
+          }
+        }
+
+        updatedPlayers[currentPlayer] = {
+          ...updatedPlayers[currentPlayer],
+          pawns: updatedPawns,
         };
 
         return {
           ...prev,
-          players: {
-            ...prev.players,
-            [currentPlayer]: {
-              ...prev.players[currentPlayer],
-              pawns: updatedPawns,
-            },
-          },
+          players: updatedPlayers,
+          hasRolledDice: false,
         };
       });
 
-      // Clear selection after move
       setSelectedPawn(null);
+      checkForWinner(state.currentPlayer);
     },
-    [selectedPawn]
+    [
+      selectedPawn,
+      state.hasRolledDice,
+      state.currentPlayer,
+      winner,
+      checkForWinner,
+    ]
   );
 
   const switchPlayer = useCallback(() => {
+    if (winner) return;
+
     setState((prev) => {
       const playersOrder: GameState["currentPlayer"][] = [
         "red",
@@ -135,19 +257,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
       return {
         ...prev,
         currentPlayer: playersOrder[nextIndex],
-        diceValue: 1, // Reset dice after turn
+        diceValue: 1,
+        hasRolledDice: false,
       };
     });
-    // Clear selection when switching players
     setSelectedPawn(null);
-  }, []);
+  }, [winner]);
 
   const selectPawn = useCallback(
     (pawnIndex: number) => {
-      console.log(`Selected pawn ${pawnIndex} for ${state.currentPlayer}`);
+      if (!state.hasRolledDice || winner) return;
       setSelectedPawn(pawnIndex);
     },
-    [state.currentPlayer]
+    [state.hasRolledDice, winner]
   );
 
   const contextValue: GameContextType = {
@@ -158,6 +280,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     selectPawn,
     selectedPawn,
     activePawns,
+    winner,
   };
 
   return (

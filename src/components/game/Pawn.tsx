@@ -2,6 +2,8 @@
 import React from "react";
 import "./Pawn.css";
 
+export type PawnColor = "red" | "green" | "yellow" | "blue";
+
 interface PawnProps {
   color: "red" | "green" | "yellow" | "blue";
   position?: "base" | "board" | "home";
