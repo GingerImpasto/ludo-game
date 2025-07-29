@@ -180,6 +180,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     (pawnIndex: number) => {
       if (!state.hasRolledDice || winner) return;
 
+      let extraTurn = false; // Declare this variable outside setState
+
       setState((prev) => {
         const currentPlayer = prev.currentPlayer;
         const updatedPlayers = { ...prev.players };
@@ -188,8 +190,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         const updatedPawns = [...playerState.pawns];
         const pawn = { ...updatedPawns[pawnIndex] };
 
-        let shouldGetExtraTurn = false;
-
+        // Starting movement (leave home)
         if (pawn.isHome && prev.diceValue === 6) {
           updatedPawns[pawnIndex] = {
             ...pawn,
@@ -197,8 +198,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             isHome: false,
             pathIndex: undefined,
           };
-          shouldGetExtraTurn = true;
-        } else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
+          extraTurn = true; // Set the external variable
+        }
+        // Home path movement
+        else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
           const newPathIndex = pawn.pathIndex + prev.diceValue;
           if (newPathIndex < HOME_PATHS[currentPlayer].length) {
             updatedPawns[pawnIndex] = {
@@ -213,19 +216,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
               position: WINNING_POSITION,
             };
           }
-        } else {
+        }
+        // Regular board movement
+        else {
           let newPosition = pawn.position + prev.diceValue;
 
+          // Handle board wrap-around (52 spaces total)
           if (newPosition > 52) {
             newPosition -= 52;
           }
 
+          // Check for home entrance
           if (newPosition === HOME_ENTRANCE[currentPlayer]) {
             updatedPawns[pawnIndex] = {
               ...pawn,
               position: newPosition,
-              pathIndex: 0,
+              pathIndex: 0, // Start of home path
             };
+            extraTurn = true; // Set the external variable
           } else {
             updatedPawns[pawnIndex] = {
               ...pawn,
@@ -242,15 +250,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...prev,
           players: updatedPlayers,
-          hasRolledDice: !shouldGetExtraTurn,
+          hasRolledDice: !extraTurn, // Player gets another turn if they rolled 6 or entered home path
         };
       });
 
       setSelectedPawn(null);
       checkForWinner(state.currentPlayer);
 
-      const pawn = state.players[state.currentPlayer].pawns[pawnIndex];
-      if (!(pawn.isHome && state.diceValue === 6)) {
+      // Use the extraTurn variable here
+      if (!extraTurn) {
         switchPlayer();
       }
     },

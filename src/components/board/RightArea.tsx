@@ -3,25 +3,13 @@ import React from "react";
 import "./RightArea.css";
 import { gridLayout, specialCells } from "../../config/gameConfig";
 import Pawn from "../game/Pawn";
+import { useBoardPawns, usePawnHandlers } from "../../utils/pawnUtils";
 import type { PawnColor } from "../game/Pawn";
-import { useGame } from "../../context/GameContext";
 
 const RightArea: React.FC = () => {
-  const { state } = useGame();
-
-  // Get all pawns from all players that are on the board (not home or finished)
-  const allPawns = [
-    ...state.players.red.pawns.map((p) => ({ ...p, color: "red" as const })),
-    ...state.players.green.pawns.map((p) => ({
-      ...p,
-      color: "green" as const,
-    })),
-    ...state.players.yellow.pawns.map((p) => ({
-      ...p,
-      color: "yellow" as const,
-    })),
-    ...state.players.blue.pawns.map((p) => ({ ...p, color: "blue" as const })),
-  ].filter((pawn) => !pawn.isHome && !pawn.isFinished);
+  const allPawns = useBoardPawns();
+  const { handlePawnClick, activePawns, selectedPawn, currentPlayer } =
+    usePawnHandlers();
 
   return (
     <div className="right-area">
@@ -44,13 +32,22 @@ const RightArea: React.FC = () => {
                 >
                   <span>{cellNumber}</span>
                   <div className="pawns-container">
-                    {pawnsInCell.map((pawn, pawnIndex) => (
-                      <Pawn
-                        key={`pawn-${pawnIndex}`}
-                        color={pawn.color as PawnColor}
-                        position="board"
-                      />
-                    ))}
+                    {pawnsInCell.map((pawn) => {
+                      const isCurrentPlayer = pawn.player === currentPlayer;
+                      const isActive = activePawns.includes(pawn.index);
+                      const isSelected = selectedPawn === pawn.index;
+
+                      return (
+                        <Pawn
+                          key={`${pawn.player}-${pawn.index}`}
+                          color={pawn.color as PawnColor}
+                          position="board"
+                          onClick={() => handlePawnClick(pawn)}
+                          selected={isSelected}
+                          disabled={!isCurrentPlayer || !isActive}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               );
