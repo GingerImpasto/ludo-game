@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-size: 70%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -28,22 +28,18 @@
 
 /* Color styles */
 .pawn-red {
-  background-color: var(--red-color);
   background-image: url('/ludo_red.webp');
 }
 
 .pawn-green {
-  background-color: var(--green-color);
   background-image: url('/ludo_green.webp');
 }
 
 .pawn-yellow {
-  background-color: var(--yellow-color);
   background-image: url('/ludo_yellow.webp');
 }
 
 .pawn-blue {
-  background-color: var(--blue-color);
   background-image: url('/ludo_blue.webp');
 }
 

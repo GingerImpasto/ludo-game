@@ -23,7 +23,7 @@ const Base: React.FC<BaseProps> = ({ color }) => {
   return (
     <div className={`base ${color}`}>
       {playerPawns.map((pawn, pawnIndex) => (
-        <div key={pawnIndex} className="pawn-position">
+        <div key={pawnIndex} className={`pawn-position ${color}`}>
           <Pawn
             color={color}
             position={pawn.isHome ? "base" : "board"}

@@ -69,6 +69,33 @@
   align-self: center;
 }
 
+/* Pawn color styles */
+.pawn-position.red {
+  background-color: var(--red-color);
+}
+
+.pawn-position.green {
+  background-color: var(--green-color);
+}
+
+.pawn-position.yellow {
+  background-color: var(--yellow-color);
+}
+
+.pawn-position.blue {
+  background-color: var(--blue-color);
+}
+
+.base.yellow {
+  background-color: var(--yellow-color);
+  border-bottom-right-radius: 0;
+}
+
+.base.blue {
+  background-color: var(--blue-color);
+  border-bottom-left-radius: 0;
+}
+
 /* Adjust for tablets and smaller devices */
 @media (max-width: 768px) {
   .base {
