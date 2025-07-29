@@ -159,6 +159,28 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     [state.players]
   );
 
+  const switchPlayer = useCallback(() => {
+    if (winner) return;
+
+    setState((prev) => {
+      const playersOrder: GameState["currentPlayer"][] = [
+        "red",
+        "green",
+        "yellow",
+        "blue",
+      ];
+      const currentIndex = playersOrder.indexOf(prev.currentPlayer);
+      const nextIndex = (currentIndex + 1) % playersOrder.length;
+      return {
+        ...prev,
+        currentPlayer: playersOrder[nextIndex],
+        diceValue: 1,
+        hasRolledDice: false,
+      };
+    });
+    setSelectedPawn(null);
+  }, [winner]);
+
   const movePawn = useCallback(
     (pawnIndex: number) => {
       if (!state.hasRolledDice || winner) return;
@@ -172,6 +194,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         const updatedPawns = [...playerState.pawns];
         const pawn = { ...updatedPawns[pawnIndex] }; // Create new pawn object
 
+        let shouldGetExtraTurn = false;
+
         // Moving out of base
         if (pawn.isHome && prev.diceValue === 6) {
           updatedPawns[pawnIndex] = {
@@ -180,6 +204,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             isHome: false,
             pathIndex: undefined, // Reset path index when leaving base
           };
+          shouldGetExtraTurn = true;
         }
         // Moving in home path
         else if (pawn.position >= HOME_ENTRANCE[currentPlayer]) {
@@ -230,37 +255,28 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...prev,
           players: updatedPlayers,
-          hasRolledDice: false,
+          hasRolledDice: !shouldGetExtraTurn, // Keep hasRolledDice true if extra turn is granted
         };
       });
 
       setSelectedPawn(null);
       checkForWinner(state.currentPlayer);
+
+      // Only switch player if it wasn't a 6 that moved a pawn out of base
+      const pawn = state.players[state.currentPlayer].pawns[pawnIndex];
+      if (!(pawn.isHome && state.diceValue === 6)) {
+        switchPlayer();
+      }
     },
-    [state.hasRolledDice, state.currentPlayer, winner, checkForWinner]
+    [
+      state.hasRolledDice,
+      state.currentPlayer,
+      state.players,
+      winner,
+      checkForWinner,
+      switchPlayer,
+    ]
   );
-
-  const switchPlayer = useCallback(() => {
-    if (winner) return;
-
-    setState((prev) => {
-      const playersOrder: GameState["currentPlayer"][] = [
-        "red",
-        "green",
-        "yellow",
-        "blue",
-      ];
-      const currentIndex = playersOrder.indexOf(prev.currentPlayer);
-      const nextIndex = (currentIndex + 1) % playersOrder.length;
-      return {
-        ...prev,
-        currentPlayer: playersOrder[nextIndex],
-        diceValue: 1,
-        hasRolledDice: false,
-      };
-    });
-    setSelectedPawn(null);
-  }, [winner]);
 
   const selectPawn = useCallback(
     (pawnIndex: number) => {
