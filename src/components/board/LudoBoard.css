@@ -51,37 +51,6 @@
   border-radius: 10px;
 }
 
-.current-player-indicator {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: bold;
-  z-index: 100;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Player-specific colors */
-.current-player-indicator[data-player="red"] {
-  background-color: #ff5252;
-  color: white;
-}
-.current-player-indicator[data-player="green"] {
-  background-color: #4caf50;
-  color: white;
-}
-.current-player-indicator[data-player="blue"] {
-  background-color: #2196f3;
-  color: white;
-}
-.current-player-indicator[data-player="yellow"] {
-  background-color: #ffeb3b;
-  color: #333;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .ludo-container {

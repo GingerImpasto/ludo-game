@@ -17,11 +17,6 @@ const LudoBoard: React.FC = () => {
   return (
     <div className="ludo-container">
       <div className="ludo-board">
-        {/* Current player indicator */}
-        <div className="current-player-indicator" data-player={currentPlayer}>
-          {currentPlayer.toUpperCase()}'s Turn
-        </div>
-
         {/* Center of the board */}
         <div className="board-center">
           <BoardCenter />
