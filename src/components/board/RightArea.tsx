@@ -42,7 +42,7 @@ const RightArea: React.FC = () => {
                     isHighlighted ? "highlight" : ""
                   }`}
                 >
-                  {cellNumber}
+                  <span>{cellNumber}</span>
                   <div className="pawns-container">
                     {pawnsInCell.map((pawn, pawnIndex) => (
                       <Pawn
