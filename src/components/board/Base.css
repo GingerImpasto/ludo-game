@@ -1,4 +1,4 @@
-/* Base.css - Styles for player bases and pawn positions */
+/* Base.css - Styles for player bases */
 :root {
   --red-color: #ff3333;
   --green-color: #33cc33;
@@ -67,47 +67,6 @@
   align-items: center;
   justify-self: center;
   align-self: center;
-  background-size: 70%;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.pawn-position:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-.pawn-position::after {
-  content: '';
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
-  background-color: white;
-  opacity: 0.3;
-  z-index: -1;
-}
-
-/* Pawn images */
-.base.red .pawn-position {
-  background-color: var(--red-color);
-  background-image: url('/ludo_red.webp');
-}
-
-.base.green .pawn-position {
-  background-color: var(--green-color);
-  background-image: url('/ludo_green.webp');
-}
-
-.base.yellow .pawn-position {
-  background-color: var(--yellow-color);
-  background-image: url('/ludo_yellow.webp');
-}
-
-.base.blue .pawn-position {
-  background-color: var(--blue-color);
-  background-image: url('/ludo_blue.webp');
 }
 
 /* Adjust for tablets and smaller devices */
