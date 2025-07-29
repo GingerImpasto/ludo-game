@@ -1,53 +1,15 @@
 // LeftArea.tsx
-import React, { useMemo } from "react";
+import React from "react";
 import "./LeftArea.css";
 import { gridLayout, specialCells } from "../../config/gameConfig";
 import Pawn from "../game/Pawn";
+import { useBoardPawns, usePawnHandlers } from "../../utils/pawnUtils";
 import type { PawnColor } from "../game/Pawn";
-import { useGame } from "../../context/GameContext";
 
 const LeftArea: React.FC = () => {
-  const { state, movePawn, activePawns, selectPawn, selectedPawn } = useGame();
-
-  // Memoize the pawns array to optimize performance
-  const allPawns = useMemo(() => {
-    return [
-      ...state.players.red.pawns.map((p, i) => ({
-        ...p,
-        color: "red" as const,
-        player: "red",
-        index: i,
-      })),
-      ...state.players.green.pawns.map((p, i) => ({
-        ...p,
-        color: "green" as const,
-        player: "green",
-        index: i,
-      })),
-      ...state.players.yellow.pawns.map((p, i) => ({
-        ...p,
-        color: "yellow" as const,
-        player: "yellow",
-        index: i,
-      })),
-      ...state.players.blue.pawns.map((p, i) => ({
-        ...p,
-        color: "blue" as const,
-        player: "blue",
-        index: i,
-      })),
-    ].filter((pawn) => !pawn.isHome && !pawn.isFinished);
-  }, [state.players]); // Recompute when players' pawns change
-
-  const handlePawnClick = (pawn: (typeof allPawns)[0]) => {
-    if (pawn.player !== state.currentPlayer) return;
-    const isActive = activePawns.includes(pawn.index);
-    if (isActive) {
-      movePawn(pawn.index);
-    } else {
-      selectPawn(pawn.index);
-    }
-  };
+  const allPawns = useBoardPawns();
+  const { handlePawnClick, activePawns, selectedPawn, currentPlayer } =
+    usePawnHandlers();
 
   return (
     <div className="left-area">
@@ -65,14 +27,14 @@ const LeftArea: React.FC = () => {
                 className={`left-area-cell ${isRed ? "red-cell" : ""}`}
               >
                 {cellNumber}
-                {pawnsInCell.map((pawn, i) => {
-                  const isCurrentPlayer = pawn.player === state.currentPlayer;
+                {pawnsInCell.map((pawn) => {
+                  const isCurrentPlayer = pawn.player === currentPlayer;
                   const isActive = activePawns.includes(pawn.index);
                   const isSelected = selectedPawn === pawn.index;
 
                   return (
                     <Pawn
-                      key={`${pawn.player}-${pawn.index}`} // Unique key for each pawn
+                      key={`${pawn.player}-${pawn.index}`}
                       color={pawn.color as PawnColor}
                       position="board"
                       onClick={() => handlePawnClick(pawn)}

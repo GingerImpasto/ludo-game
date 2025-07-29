@@ -14,20 +14,21 @@ const START_POSITIONS = {
   blue: 40,
 };
 
-// const SAFE_SPOTS = [1, 9, 14, 22, 27, 35, 40, 48];
 const HOME_ENTRANCE = {
   red: 51,
   green: 12,
   yellow: 25,
   blue: 38,
 };
+
 const HOME_PATHS = {
-  red: [52, 53, 54, 55],
-  green: [13, 26, 39, 52],
-  yellow: [26, 39, 52, 13],
-  blue: [39, 52, 13, 26],
+  red: [52, 53, 54, 55], // Red home path (unchanged)
+  green: [56, 57, 58, 59], // Green home path (updated)
+  yellow: [60, 61, 62, 63], // Yellow home path (updated)
+  blue: [64, 65, 66, 67], // Blue home path (updated)
 };
-const WINNING_POSITION = 57;
+
+const WINNING_POSITION = 68; // Updated to be higher than all home paths
 
 interface PlayerState {
   pawns: {
@@ -128,20 +129,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     return playerState.pawns
       .map((pawn, index) => ({ ...pawn, index }))
       .filter((pawn) => {
-        // Can move out with a 6
         if (pawn.isHome) return state.diceValue === 6;
-
-        // Can't move if finished
         if (pawn.isFinished) return false;
-
-        // In home path - can only move if exact dice available
-        if (pawn.position >= HOME_ENTRANCE[state.currentPlayer]) {
+        if (pawn.pathIndex !== undefined) {
           const remaining =
-            HOME_PATHS[state.currentPlayer].length - pawn.pathIndex!;
+            HOME_PATHS[state.currentPlayer].length - pawn.pathIndex;
           return state.diceValue <= remaining;
         }
-
-        // Normal movement
         return true;
       })
       .map((pawn) => pawn.index);
@@ -190,9 +184,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         const updatedPlayers = { ...prev.players };
         const playerState = { ...updatedPlayers[currentPlayer] };
 
-        // Create a new array for pawns to ensure state updates properly
         const updatedPawns = [...playerState.pawns];
-        const pawn = { ...updatedPawns[pawnIndex] }; // Create new pawn object
+        const pawn = { ...updatedPawns[pawnIndex] };
 
         let shouldGetExtraTurn = false;
 
@@ -202,13 +195,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             ...pawn,
             position: START_POSITIONS[currentPlayer],
             isHome: false,
-            pathIndex: undefined, // Reset path index when leaving base
+            pathIndex: undefined,
           };
           shouldGetExtraTurn = true;
         }
-        // Moving in home path
-        else if (pawn.position >= HOME_ENTRANCE[currentPlayer]) {
-          const newPathIndex = (pawn.pathIndex || 0) + prev.diceValue;
+        // Moving in home path (only if already entered home path)
+        else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
+          const newPathIndex = pawn.pathIndex + prev.diceValue;
           if (newPathIndex < HOME_PATHS[currentPlayer].length) {
             updatedPawns[pawnIndex] = {
               ...pawn,
@@ -232,7 +225,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             newPosition -= 52;
           }
 
-          // Check if entering home path
+          // Check if entering home path (exact roll needed)
           if (newPosition === HOME_ENTRANCE[currentPlayer]) {
             updatedPawns[pawnIndex] = {
               ...pawn,
@@ -255,14 +248,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...prev,
           players: updatedPlayers,
-          hasRolledDice: !shouldGetExtraTurn, // Keep hasRolledDice true if extra turn is granted
+          hasRolledDice: !shouldGetExtraTurn,
         };
       });
 
       setSelectedPawn(null);
       checkForWinner(state.currentPlayer);
 
-      // Only switch player if it wasn't a 6 that moved a pawn out of base
       const pawn = state.players[state.currentPlayer].pawns[pawnIndex];
       if (!(pawn.isHome && state.diceValue === 6)) {
         switchPlayer();
