@@ -14,7 +14,7 @@ const START_POSITIONS = {
   blue: 40,
 };
 
-const SAFE_SPOTS = [1, 9, 14, 22, 27, 35, 40, 48];
+// const SAFE_SPOTS = [1, 9, 14, 22, 27, 35, 40, 48];
 const HOME_ENTRANCE = {
   red: 51,
   green: 12,
@@ -161,13 +161,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const movePawn = useCallback(
     (pawnIndex: number) => {
-      if (selectedPawn === null || !state.hasRolledDice || winner) return;
+      if (!state.hasRolledDice || winner) return;
 
       setState((prev) => {
         const currentPlayer = prev.currentPlayer;
         const updatedPlayers = { ...prev.players };
-        const updatedPawns = [...updatedPlayers[currentPlayer].pawns];
-        const pawn = updatedPawns[pawnIndex];
+        const playerState = { ...updatedPlayers[currentPlayer] };
+
+        // Create a new array for pawns to ensure state updates properly
+        const updatedPawns = [...playerState.pawns];
+        const pawn = { ...updatedPawns[pawnIndex] }; // Create new pawn object
 
         // Moving out of base
         if (pawn.isHome && prev.diceValue === 6) {
@@ -175,6 +178,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             ...pawn,
             position: START_POSITIONS[currentPlayer],
             isHome: false,
+            pathIndex: undefined, // Reset path index when leaving base
           };
         }
         // Moving in home path
@@ -219,7 +223,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         updatedPlayers[currentPlayer] = {
-          ...updatedPlayers[currentPlayer],
+          ...playerState,
           pawns: updatedPawns,
         };
 
@@ -233,13 +237,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
       setSelectedPawn(null);
       checkForWinner(state.currentPlayer);
     },
-    [
-      selectedPawn,
-      state.hasRolledDice,
-      state.currentPlayer,
-      winner,
-      checkForWinner,
-    ]
+    [state.hasRolledDice, state.currentPlayer, winner, checkForWinner]
   );
 
   const switchPlayer = useCallback(() => {

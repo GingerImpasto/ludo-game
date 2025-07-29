@@ -11,10 +11,16 @@ const LeftArea: React.FC = () => {
 
   // Get all pawns from all players that are on the board
   const allPawns = [
-    ...state.players.red.pawns.map((p) => ({ ...p, color: "red" })),
-    ...state.players.green.pawns.map((p) => ({ ...p, color: "green" })),
-    ...state.players.yellow.pawns.map((p) => ({ ...p, color: "yellow" })),
-    ...state.players.blue.pawns.map((p) => ({ ...p, color: "blue" })),
+    ...state.players.red.pawns.map((p) => ({ ...p, color: "red" as const })),
+    ...state.players.green.pawns.map((p) => ({
+      ...p,
+      color: "green" as const,
+    })),
+    ...state.players.yellow.pawns.map((p) => ({
+      ...p,
+      color: "yellow" as const,
+    })),
+    ...state.players.blue.pawns.map((p) => ({ ...p, color: "blue" as const })),
   ].filter((pawn) => !pawn.isHome && !pawn.isFinished);
 
   return (

@@ -9,20 +9,13 @@ interface BaseProps {
 }
 
 const Base: React.FC<BaseProps> = ({ color }) => {
-  const { state, selectPawn, selectedPawn, activePawns, movePawn } = useGame();
-
+  const { state, movePawn, activePawns } = useGame();
   const isCurrentPlayer = state.currentPlayer === color;
   const playerPawns = state.players[color].pawns;
 
   const handlePawnClick = (pawnIndex: number) => {
     if (isCurrentPlayer && activePawns.includes(pawnIndex)) {
-      if (selectedPawn === pawnIndex) {
-        // If pawn is already selected, move it
-        movePawn(pawnIndex);
-      } else {
-        // Otherwise select it
-        selectPawn(pawnIndex);
-      }
+      movePawn(pawnIndex);
     }
   };
 
@@ -35,7 +28,6 @@ const Base: React.FC<BaseProps> = ({ color }) => {
               color={color}
               position="base"
               onClick={() => handlePawnClick(pawnIndex)}
-              selected={isCurrentPlayer && selectedPawn === pawnIndex}
               disabled={!isCurrentPlayer || !activePawns.includes(pawnIndex)}
             />
           )}
