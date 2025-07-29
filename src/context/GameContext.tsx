@@ -22,13 +22,13 @@ const HOME_ENTRANCE = {
 };
 
 const HOME_PATHS = {
-  red: [52, 53, 54, 55], // Red home path (unchanged)
-  green: [56, 57, 58, 59], // Green home path (updated)
-  yellow: [60, 61, 62, 63], // Yellow home path (updated)
-  blue: [64, 65, 66, 67], // Blue home path (updated)
+  red: [52, 53, 54, 55],
+  green: [56, 57, 58, 59],
+  yellow: [60, 61, 62, 63],
+  blue: [64, 65, 66, 67],
 };
 
-const WINNING_POSITION = 68; // Updated to be higher than all home paths
+const WINNING_POSITION = 68;
 
 interface PlayerState {
   pawns: {
@@ -60,6 +60,7 @@ interface GameContextType {
   selectedPawn: number | null;
   activePawns: number[];
   winner: string | null;
+  currentPlayer: "red" | "green" | "yellow" | "blue"; // Added this line
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -189,7 +190,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
 
         let shouldGetExtraTurn = false;
 
-        // Moving out of base
         if (pawn.isHome && prev.diceValue === 6) {
           updatedPawns[pawnIndex] = {
             ...pawn,
@@ -198,9 +198,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             pathIndex: undefined,
           };
           shouldGetExtraTurn = true;
-        }
-        // Moving in home path (only if already entered home path)
-        else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
+        } else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
           const newPathIndex = pawn.pathIndex + prev.diceValue;
           if (newPathIndex < HOME_PATHS[currentPlayer].length) {
             updatedPawns[pawnIndex] = {
@@ -215,17 +213,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
               position: WINNING_POSITION,
             };
           }
-        }
-        // Normal movement
-        else {
+        } else {
           let newPosition = pawn.position + prev.diceValue;
 
-          // Handle board loop (52 total cells)
           if (newPosition > 52) {
             newPosition -= 52;
           }
 
-          // Check if entering home path (exact roll needed)
           if (newPosition === HOME_ENTRANCE[currentPlayer]) {
             updatedPawns[pawnIndex] = {
               ...pawn,
@@ -287,6 +281,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     selectedPawn,
     activePawns,
     winner,
+    currentPlayer: state.currentPlayer, // Added this line
   };
 
   return (
