@@ -2,23 +2,54 @@
 import React from "react";
 import "./TopArea.css";
 import { gridLayout, specialCells } from "../../config/gameConfig";
+import Pawn from "../game/Pawn";
+import type { PawnColor } from "../game/Pawn";
+import { useGame } from "../../context/GameContext";
 
 const TopArea: React.FC = () => {
-  const gridItems = gridLayout.topArea.flat();
+  const { state } = useGame();
+
+  // Get all pawns from all players that are on the board
+  const allPawns = [
+    ...state.players.red.pawns.map((p) => ({ ...p, color: "red" as const })),
+    ...state.players.green.pawns.map((p) => ({
+      ...p,
+      color: "green" as const,
+    })),
+    ...state.players.yellow.pawns.map((p) => ({
+      ...p,
+      color: "yellow" as const,
+    })),
+    ...state.players.blue.pawns.map((p) => ({ ...p, color: "blue" as const })),
+  ].filter((pawn) => !pawn.isHome && !pawn.isFinished);
 
   return (
     <div className="top-area">
       <div className="top-area-grid">
-        {gridItems.map((number) => (
-          <div
-            key={number}
-            className={`top-area-cell ${
-              specialCells.greenCells.includes(number) ? "green" : ""
-            }`}
-          >
-            {number}
-          </div>
-        ))}
+        {gridLayout.topArea.flatMap((row, rowIndex) =>
+          row.map((cellNumber, colIndex) => {
+            const isGreen = specialCells.greenCells.includes(cellNumber);
+            const pawnsInCell = allPawns.filter(
+              (pawn) => pawn.position === cellNumber
+            );
+
+            return (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={`top-area-cell ${isGreen ? "green-cell" : ""}`}
+              >
+                {cellNumber}
+                {pawnsInCell.map((pawn, i) => (
+                  <Pawn
+                    key={i}
+                    color={pawn.color as PawnColor}
+                    position="board"
+                  />
+                ))}
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
