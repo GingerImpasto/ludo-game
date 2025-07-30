@@ -1,7 +1,7 @@
 // gameLogic.ts
 import { specialCells } from "../config/gameConfig";
 
-// Game configuration
+// Game configuration (unchanged)
 export const START_POSITIONS = {
   red: 1,
   green: 14,
@@ -25,7 +25,7 @@ export const HOME_PATHS = {
 
 export const WINNING_POSITION = 73;
 
-// Safe cells configuration combining all special positions
+// Safe cells configuration (unchanged)
 export const SAFE_CELLS = [
   ...Object.values(START_POSITIONS),
   ...Object.values(HOME_ENTRANCE),
@@ -36,6 +36,7 @@ export const SAFE_CELLS = [
   9, 22, 35, 48, // Middle safe spots
 ];
 
+// PlayerState and GameState interfaces (unchanged)
 export interface PlayerState {
   pawns: {
     position: number;
@@ -58,6 +59,7 @@ export interface GameState {
   consecutiveSixes: number;
 }
 
+// getInitialGameState (unchanged)
 export const getInitialGameState = (): GameState => ({
   diceValue: 1,
   currentPlayer: "red",
@@ -99,8 +101,10 @@ export const getInitialGameState = (): GameState => ({
   },
 });
 
+// rollDice (unchanged)
 export const rollDice = () => Math.floor(Math.random() * 6) + 1;
 
+// getActivePawns (unchanged)
 export const getActivePawns = (
   state: GameState,
   winner: string | null,
@@ -113,18 +117,18 @@ export const getActivePawns = (
   return playerState.pawns
     .map((pawn, index) => ({ ...pawn, index }))
     .filter((pawn) => {
-      // Basic movement rules only
       if (pawn.isHome) return state.diceValue === 6;
       if (pawn.isFinished) return false;
       if (pawn.pathIndex !== undefined) {
         const remaining = HOME_PATHS[currentPlayer].length - pawn.pathIndex;
         return state.diceValue <= remaining;
       }
-      return true; // Allow all other moves
+      return true;
     })
     .map((pawn) => pawn.index);
 };
 
+// checkForWinner (unchanged)
 export const checkForWinner = (
   players: GameState["players"],
   player: keyof GameState["players"]
@@ -132,6 +136,7 @@ export const checkForWinner = (
   return players[player].pawns.every((p) => p.isFinished);
 };
 
+// getNextPlayer (unchanged)
 export const getNextPlayer = (currentPlayer: GameState["currentPlayer"]) => {
   const playersOrder: GameState["currentPlayer"][] = [
     "red",
@@ -165,27 +170,25 @@ export const movePawnLogic = (
       isHome: false,
       pathIndex: undefined,
     };
-    extraTurn = true;
+    extraTurn = true; // Grant extra turn for rolling a 6
   }
-  // 2. Home path movement (including extra moves from entrance)
+  // 2. Home path movement
   else if (pawn.pathIndex !== undefined || pawn.position === HOME_ENTRANCE[currentPlayer]) {
     const homePath = HOME_PATHS[currentPlayer];
     const currentStep = pawn.position === HOME_ENTRANCE[currentPlayer] 
-      ? 0  // At entrance: start counting from step 0
-      : (pawn.pathIndex || 0) + 1; // Convert zero-index to step count
+      ? 0
+      : (pawn.pathIndex || 0) + 1;
 
     const newStep = currentStep + state.diceValue;
 
     if (newStep <= homePath.length) {
       updatedPawns[pawnIndex] = {
         ...pawn,
-        position: homePath[newStep - 1], // Convert back to zero-index
+        position: homePath[newStep - 1],
         pathIndex: newStep - 1,
       };
-      // Grant extra turn if landing on entrance (for future moves)
-      if (pawn.position === HOME_ENTRANCE[currentPlayer]) extraTurn = true;
+      extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
     } else {
-      // Win if overshooting home path
       updatedPawns[pawnIndex] = {
         ...pawn,
         isFinished: true,
@@ -198,10 +201,8 @@ export const movePawnLogic = (
     let newPosition = pawn.position + state.diceValue;
     const homeEntrance = HOME_ENTRANCE[currentPlayer];
 
-    // Handle board wrap-around (52 spaces)
     if (newPosition > 52) newPosition -= 52;
 
-    // Check for home entrance crossing
     if (pawn.position < homeEntrance && newPosition >= homeEntrance) {
       const stepsToEntrance = homeEntrance - pawn.position;
       const stepsIntoHome = state.diceValue - stepsToEntrance;
@@ -211,12 +212,11 @@ export const movePawnLogic = (
         updatedPawns[pawnIndex] = {
           ...pawn,
           position: homeEntrance,
-          pathIndex: 0, // Ready to enter home path
+          pathIndex: 0,
         };
-        extraTurn = true;
+        extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
       } 
       else if (stepsIntoHome > 0) {
-        // Move into home path
         const homePath = HOME_PATHS[currentPlayer];
         if (stepsIntoHome <= homePath.length) {
           updatedPawns[pawnIndex] = {
@@ -224,8 +224,8 @@ export const movePawnLogic = (
             position: homePath[stepsIntoHome - 1],
             pathIndex: stepsIntoHome - 1,
           };
+          extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
         } else {
-          // Win if overshooting
           updatedPawns[pawnIndex] = {
             ...pawn,
             isFinished: true,
@@ -235,13 +235,12 @@ export const movePawnLogic = (
       }
     } 
     else {
-      // Normal movement (no home path interaction)
       updatedPawns[pawnIndex] = {
         ...pawn,
         position: newPosition,
       };
 
-      // Capture logic (only on non-safe cells)
+      // Capture logic
       if (!SAFE_CELLS.includes(newPosition)) {
         Object.entries(updatedPlayers).forEach(([color, otherPlayer]) => {
           if (color === currentPlayer) return;
@@ -252,7 +251,6 @@ export const movePawnLogic = (
               !otherPawn.isFinished &&
               otherPawn.position === newPosition
             ) {
-              // Send opponent's pawn home
               updatedPlayers[color as keyof typeof updatedPlayers].pawns[otherPawnIndex] = {
                 ...otherPawn,
                 position: -1,
@@ -263,6 +261,7 @@ export const movePawnLogic = (
           });
         });
       }
+      extraTurn = state.diceValue === 6 || capturedPawn; // Grant extra turn for rolling a 6 or capturing
     }
   }
 
@@ -274,8 +273,8 @@ export const movePawnLogic = (
 
   return {
     players: updatedPlayers,
-    hasRolledDice: !extraTurn && !capturedPawn, // End turn unless extra move granted
-    extraTurn,
+    hasRolledDice: !(extraTurn || capturedPawn), // Turn ends unless extra turn was granted
+    extraTurn: extraTurn || capturedPawn, // Reflects if an extra turn was granted
     capturedPawn,
   };
 };
