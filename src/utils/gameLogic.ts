@@ -33,10 +33,7 @@ export const SAFE_CELLS = [
   ...specialCells.greenCells,
   ...specialCells.blueCells,
   ...specialCells.rightHighlight,
-  9,
-  22,
-  35,
-  48, // Middle safe spots
+  9, 22, 35, 48, // Middle safe spots
 ];
 
 export interface PlayerState {
@@ -58,12 +55,14 @@ export interface GameState {
     blue: PlayerState;
   };
   hasRolledDice: boolean;
+  consecutiveSixes: number;
 }
 
 export const getInitialGameState = (): GameState => ({
   diceValue: 1,
   currentPlayer: "red",
   hasRolledDice: false,
+  consecutiveSixes: 0,
   players: {
     red: {
       pawns: Array(4).fill({
@@ -110,25 +109,18 @@ export const getActivePawns = (
   if (winner) return [];
 
   const playerState = state.players[currentPlayer];
+  
   return playerState.pawns
     .map((pawn, index) => ({ ...pawn, index }))
     .filter((pawn) => {
+      // Basic movement rules only
       if (pawn.isHome) return state.diceValue === 6;
       if (pawn.isFinished) return false;
       if (pawn.pathIndex !== undefined) {
         const remaining = HOME_PATHS[currentPlayer].length - pawn.pathIndex;
         return state.diceValue <= remaining;
       }
-      // Don't allow moving from safe cells if other options exist
-      const isSafe = SAFE_CELLS.includes(pawn.position);
-      const hasNonSafeOptions = playerState.pawns.some(
-        (p, i) =>
-          !p.isHome &&
-          !p.isFinished &&
-          !SAFE_CELLS.includes(p.position) &&
-          i !== pawn.index
-      );
-      return !(isSafe && hasNonSafeOptions);
+      return true; // Allow all other moves
     })
     .map((pawn) => pawn.index);
 };
@@ -210,33 +202,34 @@ export const movePawnLogic = (
       };
       extraTurn = true;
     } else {
-      // Check for collisions
+      // Optional capture logic (player can choose to capture or not)
       const isSafeCell = SAFE_CELLS.includes(newPosition);
+      
+      // Check if player wants to capture (position will be updated either way)
+      if (!isSafeCell) {
+        Object.entries(updatedPlayers).forEach(([color, otherPlayer]) => {
+          if (color === currentPlayer) return;
 
-      // Check all other players' pawns for collisions
-      Object.entries(updatedPlayers).forEach(([color, otherPlayer]) => {
-        if (color === currentPlayer) return;
-
-        otherPlayer.pawns.forEach((otherPawn, otherPawnIndex) => {
-          if (
-            !otherPawn.isHome &&
-            !otherPawn.isFinished &&
-            otherPawn.position === newPosition &&
-            !isSafeCell
-          ) {
-            // Capture the opponent's pawn
-            updatedPlayers[color as keyof typeof updatedPlayers].pawns[
-              otherPawnIndex
-            ] = {
-              ...otherPawn,
-              position: -1,
-              isHome: true,
-              pathIndex: undefined,
-            };
-            capturedPawn = true;
-          }
+          otherPlayer.pawns.forEach((otherPawn, otherPawnIndex) => {
+            if (
+              !otherPawn.isHome &&
+              !otherPawn.isFinished &&
+              otherPawn.position === newPosition
+            ) {
+              // Capture the opponent's pawn
+              updatedPlayers[color as keyof typeof updatedPlayers].pawns[
+                otherPawnIndex
+              ] = {
+                ...otherPawn,
+                position: -1,
+                isHome: true,
+                pathIndex: undefined,
+              };
+              capturedPawn = true;
+            }
+          });
         });
-      });
+      }
 
       updatedPawns[pawnIndex] = {
         ...pawn,
