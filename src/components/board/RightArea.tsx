@@ -14,46 +14,42 @@ const RightArea: React.FC = () => {
   return (
     <div className="right-area">
       <div className="right-area-grid">
-        {gridLayout.rightArea.map((row, rowIndex) => (
-          <React.Fragment key={`row-${rowIndex}`}>
-            {row.map((cellNumber, colIndex) => {
-              const isHighlighted =
-                specialCells.rightHighlight.includes(cellNumber);
-              const pawnsInCell = allPawns.filter(
-                (pawn) => pawn.position === cellNumber
-              );
+        {gridLayout.rightArea.flatMap((row, rowIndex) =>
+          row.map((cellNumber, colIndex) => {
+            const isHighlighted =
+              specialCells.rightHighlight.includes(cellNumber);
+            const pawnsInCell = allPawns.filter(
+              (pawn) => pawn.position === cellNumber
+            );
 
-              return (
-                <div
-                  key={`cell-${rowIndex}-${colIndex}`}
-                  className={`right-area-cell ${
-                    isHighlighted ? "highlight" : ""
-                  }`}
-                >
-                  <span>{cellNumber}</span>
-                  <div className="pawns-container">
-                    {pawnsInCell.map((pawn) => {
-                      const isCurrentPlayer = pawn.player === currentPlayer;
-                      const isActive = activePawns.includes(pawn.index);
-                      const isSelected = selectedPawn === pawn.index;
+            return (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={`right-area-cell ${
+                  isHighlighted ? "highlight" : ""
+                }`}
+              >
+                {cellNumber}
+                {pawnsInCell.map((pawn) => {
+                  const isCurrentPlayer = pawn.player === currentPlayer;
+                  const isActive = activePawns.includes(pawn.index);
+                  const isSelected = selectedPawn === pawn.index;
 
-                      return (
-                        <Pawn
-                          key={`${pawn.player}-${pawn.index}`}
-                          color={pawn.color as PawnColor}
-                          position="board"
-                          onClick={() => handlePawnClick(pawn)}
-                          selected={isSelected}
-                          disabled={!isCurrentPlayer || !isActive}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ))}
+                  return (
+                    <Pawn
+                      key={`${pawn.player}-${pawn.index}`}
+                      color={pawn.color as PawnColor}
+                      position="board"
+                      onClick={() => handlePawnClick(pawn)}
+                      selected={isSelected}
+                      disabled={!isCurrentPlayer || !isActive}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
