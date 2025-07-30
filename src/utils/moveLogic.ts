@@ -6,7 +6,7 @@ import {
   HOME_PATHS, 
   WINNING_POSITION, 
   SAFE_CELLS 
-} from "./gameLogic";
+} from "../config/gameConfig";
 
 export const movePawnLogic = (
   state: GameState,

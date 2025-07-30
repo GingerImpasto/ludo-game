@@ -1,42 +1,10 @@
 // gameLogic.ts
-import { specialCells } from "../config/gameConfig";
+import { 
+  HOME_PATHS,
+  PLAYERS_ORDER
+} from "../config/gameConfig";
 
-// Game configuration (unchanged)
-export const START_POSITIONS = {
-  red: 1,
-  green: 14,
-  yellow: 27,
-  blue: 40,
-};
-
-export const HOME_ENTRANCE = {
-  red: 51,
-  green: 12,
-  yellow: 25,
-  blue: 38,
-};
-
-export const WINNING_POSITION = 73;
-
-export const HOME_PATHS = {
-  red: [53, 54, 55, 56, 57, WINNING_POSITION],
-  green: [58, 59, 60, 61, 62, WINNING_POSITION],
-  yellow: [63, 64, 65, 66, 67, WINNING_POSITION],
-  blue: [68, 69, 70, 71, 72, WINNING_POSITION],
-};
-
-// Safe cells configuration (unchanged)
-export const SAFE_CELLS = [
-  ...Object.values(START_POSITIONS),
-  ...Object.values(HOME_ENTRANCE),
-  ...specialCells.redNumbers,
-  ...specialCells.greenCells,
-  ...specialCells.blueCells,
-  ...specialCells.rightHighlight,
-  9, 22, 35, 48, // Middle safe spots
-];
-
-// PlayerState and GameState interfaces (unchanged)
+// PlayerState and GameState interfaces
 export interface PlayerState {
   pawns: {
     position: number;
@@ -59,7 +27,7 @@ export interface GameState {
   consecutiveSixes: number;
 }
 
-// getInitialGameState (unchanged)
+// getInitialGameState
 export const getInitialGameState = (): GameState => ({
   diceValue: 1,
   currentPlayer: "red",
@@ -101,10 +69,10 @@ export const getInitialGameState = (): GameState => ({
   },
 });
 
-// rollDice (unchanged)
+// rollDice
 export const rollDice = () => Math.floor(Math.random() * 6) + 1;
 
-// getActivePawns (unchanged)
+// getActivePawns
 export const getActivePawns = (
   state: GameState,
   winner: string | null,
@@ -128,7 +96,7 @@ export const getActivePawns = (
     .map((pawn) => pawn.index);
 };
 
-// checkForWinner (unchanged)
+// checkForWinner
 export const checkForWinner = (
   players: GameState["players"],
   player: keyof GameState["players"]
@@ -136,14 +104,8 @@ export const checkForWinner = (
   return players[player].pawns.every((p) => p.isFinished);
 };
 
-// getNextPlayer (unchanged)
+// getNextPlayer
 export const getNextPlayer = (currentPlayer: GameState["currentPlayer"]) => {
-  const playersOrder: GameState["currentPlayer"][] = [
-    "red",
-    "green",
-    "yellow",
-    "blue",
-  ];
-  const currentIndex = playersOrder.indexOf(currentPlayer);
-  return playersOrder[(currentIndex + 1) % playersOrder.length];
+  const currentIndex = PLAYERS_ORDER.indexOf(currentPlayer);
+  return PLAYERS_ORDER[(currentIndex + 1) % PLAYERS_ORDER.length];
 };

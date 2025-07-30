@@ -16,8 +16,7 @@ const RightArea: React.FC = () => {
       <div className="right-area-grid">
         {gridLayout.rightArea.flatMap((row, rowIndex) =>
           row.map((cellNumber, colIndex) => {
-            const isHighlighted =
-              specialCells.rightHighlight.includes(cellNumber);
+            const isHighlighted = specialCells.yellowCells.includes(cellNumber);
             const pawnsInCell = allPawns.filter(
               (pawn) => pawn.position === cellNumber
             );

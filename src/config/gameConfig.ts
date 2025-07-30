@@ -27,5 +27,45 @@ export const specialCells = {
   redNumbers: [1, 53, 54, 55, 56, 57],
   greenCells: [14, 58, 59, 60, 61, 62],
   blueCells: [40, 68, 69, 70, 71, 72],
-  rightHighlight: [27, ...Array.from({length: 5}, (_, i) => 63 + i)], // 27, 63-67
+  yellowCells: [27, 63, 64, 65, 66, 67],
 };
+
+export const START_POSITIONS = {
+  red: 1,
+  green: 14,
+  yellow: 27,
+  blue: 40,
+};
+
+export const HOME_ENTRANCE = {
+  red: 51,
+  green: 12,
+  yellow: 25,
+  blue: 38,
+};
+
+export const WINNING_POSITION = 73;
+
+export const HOME_PATHS = {
+  red: [53, 54, 55, 56, 57, WINNING_POSITION],
+  green: [58, 59, 60, 61, 62, WINNING_POSITION],
+  yellow: [63, 64, 65, 66, 67, WINNING_POSITION],
+  blue: [68, 69, 70, 71, 72, WINNING_POSITION],
+};
+
+export const SAFE_CELLS = [
+  ...Object.values(START_POSITIONS),
+  ...Object.values(HOME_ENTRANCE),
+  ...specialCells.redNumbers,
+  ...specialCells.greenCells,
+  ...specialCells.blueCells,
+  ...specialCells.yellowCells,
+  9, 22, 35, 48, // Middle safe spots
+];
+
+export const PLAYERS_ORDER: Array<'red' | 'green' | 'yellow' | 'blue'> = [
+  "red",
+  "green",
+  "yellow",
+  "blue",
+];
