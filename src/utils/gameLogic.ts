@@ -121,8 +121,8 @@ export const getActivePawns = (
       if (pawn.isFinished) return false;
       if (pawn.pathIndex !== undefined) {
         const remaining = HOME_PATHS[currentPlayer].length - pawn.pathIndex;
-        return state.diceValue <= remaining;
-      }
+        return state.diceValue <= remaining || (remaining === 0 && state.diceValue === 1);
+      }     
       return true;
     })
     .map((pawn) => pawn.index);
