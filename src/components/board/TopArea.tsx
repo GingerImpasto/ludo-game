@@ -1,7 +1,12 @@
 // TopArea.tsx
 import React from "react";
 import "./TopArea.css";
-import { gridLayout, specialCells } from "../../config/gameConfig";
+import {
+  gridLayout,
+  specialCells,
+  HOME_ENTRANCE,
+  STAR_CELLS,
+} from "../../config/gameConfig";
 import Pawn from "../game/Pawn";
 import { useBoardPawns, usePawnHandlers } from "../../utils/pawnUtils";
 import type { PawnColor } from "../game/Pawn";
@@ -17,6 +22,8 @@ const TopArea: React.FC = () => {
         {gridLayout.topArea.flatMap((row, rowIndex) =>
           row.map((cellNumber, colIndex) => {
             const isGreen = specialCells.greenCells.includes(cellNumber);
+            const isStarCell = cellNumber === STAR_CELLS.green;
+            const isHomeEntrance = cellNumber === HOME_ENTRANCE.green;
             const pawnsInCell = allPawns.filter(
               (pawn) => pawn.position === cellNumber
             );
@@ -24,9 +31,12 @@ const TopArea: React.FC = () => {
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`top-area-cell ${isGreen ? "green-cell" : ""}`}
+                className={`top-area-cell 
+                  ${isGreen ? "green-cell" : ""}
+                  ${isStarCell ? "star-cell" : ""}
+                  ${isHomeEntrance ? "home-entrance" : ""}
+                `}
               >
-                {cellNumber}
                 {pawnsInCell.map((pawn) => {
                   const isCurrentPlayer = pawn.player === currentPlayer;
                   const isActive = activePawns.includes(pawn.index);

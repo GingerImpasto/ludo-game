@@ -29,23 +29,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   background-color: white;
-  font-size: min(2vw, 1.5rem);
-  font-weight: bold;
-  color: #333;
   position: relative;
-  padding-top: 5px;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-}
-
-.right-area-cell > span {
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 5px;
 }
 
 /* Alternating cell colors */
@@ -69,5 +58,46 @@
 
 /* Highlight cell */
 .right-area-cell.highlight {
-  background-color: #ffeb3b;
+  background-color: #FFCC00;
+}
+
+/* Star cell indication */
+.right-area-cell.star-cell::after {
+  content: "★";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  color: #FFCC00;
+  opacity: 0.7;
+}
+
+/* Home entrance indication */
+.right-area-cell.home-entrance::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: #FFCC00;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* Pawns container styling */
+.right-area-cell > .pawns-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
 }

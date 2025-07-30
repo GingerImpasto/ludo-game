@@ -1,59 +1,96 @@
 /* TopArea.css */
 .top-area {
-grid-area: top;
-background-color: #888;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-padding: 0;
-margin: 0;
-overflow: hidden;
-width: 100%;
-height: 100%;
-position: relative;
+  grid-area: top;
+  background-color: #888;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .top-area-grid {
-display: grid;
-grid-template-columns: repeat(3, minmax(0, 1fr)); /* Changed to 3 columns */
-grid-template-rows: repeat(6, minmax(0, 1fr)); /* Changed to 6 rows */
-width: 100%;
-height: 100%;
-min-width: 0;
-min-height: 0;
-gap: 1px;
-margin: 0;
-padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
 }
 
 .top-area-cell {
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: white;
-border: none;
-font-size: min(2vw, 1.5rem);
-font-weight: bold;
-color: #333;
-min-width: 0;
-min-height: 0;
-overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Updated alternating cell colors for 6x3 grid */
 .top-area-cell:nth-child(6n+1),
 .top-area-cell:nth-child(6n+3),
 .top-area-cell:nth-child(6n+5) {
-background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .top-area-cell:nth-child(6n+2),
 .top-area-cell:nth-child(6n+4),
 .top-area-cell:nth-child(6n+6) {
-background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 
 /* Green cells */
 .top-area-cell.green-cell {
-background-color: #4caf50;
-color: white;
+  background-color: #33CC33;
+}
+
+/* Star cell indication */
+.top-area-cell.star-cell::after {
+  content: "★";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  color: #33CC33;
+  opacity: 0.7;
+}
+
+/* Home entrance indication */
+.top-area-cell.home-entrance::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5px; /* Changed from height to width */
+  background-color: #33CC33;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* Pawns container styling */
+.top-area-cell > .pawns-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
 }

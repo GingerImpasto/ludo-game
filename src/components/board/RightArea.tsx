@@ -1,7 +1,12 @@
 // RightArea.tsx
 import React from "react";
 import "./RightArea.css";
-import { gridLayout, specialCells } from "../../config/gameConfig";
+import {
+  gridLayout,
+  specialCells,
+  HOME_ENTRANCE,
+  STAR_CELLS,
+} from "../../config/gameConfig";
 import Pawn from "../game/Pawn";
 import { useBoardPawns, usePawnHandlers } from "../../utils/pawnUtils";
 import type { PawnColor } from "../game/Pawn";
@@ -17,6 +22,8 @@ const RightArea: React.FC = () => {
         {gridLayout.rightArea.flatMap((row, rowIndex) =>
           row.map((cellNumber, colIndex) => {
             const isHighlighted = specialCells.yellowCells.includes(cellNumber);
+            const isStarCell = cellNumber === STAR_CELLS.yellow;
+            const isHomeEntrance = cellNumber === HOME_ENTRANCE.yellow;
             const pawnsInCell = allPawns.filter(
               (pawn) => pawn.position === cellNumber
             );
@@ -24,11 +31,12 @@ const RightArea: React.FC = () => {
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`right-area-cell ${
-                  isHighlighted ? "highlight" : ""
-                }`}
+                className={`right-area-cell 
+                  ${isHighlighted ? "highlight" : ""}
+                  ${isStarCell ? "star-cell" : ""}
+                  ${isHomeEntrance ? "home-entrance" : ""}
+                `}
               >
-                {cellNumber}
                 {pawnsInCell.map((pawn) => {
                   const isCurrentPlayer = pawn.player === currentPlayer;
                   const isActive = activePawns.includes(pawn.index);
