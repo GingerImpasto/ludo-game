@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { specialCells } from "../config/gameConfig";
 
 // Game configuration
 const START_POSITIONS = {
@@ -29,6 +30,20 @@ const HOME_PATHS = {
 };
 
 const WINNING_POSITION = 68;
+
+// Safe cells configuration combining all special positions
+const SAFE_CELLS = [
+  ...Object.values(START_POSITIONS),
+  ...Object.values(HOME_ENTRANCE),
+  ...specialCells.redNumbers,
+  ...specialCells.greenCells,
+  ...specialCells.blueCells,
+  ...specialCells.rightHighlight,
+  9,
+  22,
+  35,
+  48, // Middle safe spots
+];
 
 interface PlayerState {
   pawns: {
@@ -60,7 +75,7 @@ interface GameContextType {
   selectedPawn: number | null;
   activePawns: number[];
   winner: string | null;
-  currentPlayer: "red" | "green" | "yellow" | "blue"; // Added this line
+  currentPlayer: "red" | "green" | "yellow" | "blue";
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -137,7 +152,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             HOME_PATHS[state.currentPlayer].length - pawn.pathIndex;
           return state.diceValue <= remaining;
         }
-        return true;
+        // Don't allow moving from safe cells if other options exist
+        const isSafe = SAFE_CELLS.includes(pawn.position);
+        const hasNonSafeOptions = playerState.pawns.some(
+          (p, i) =>
+            !p.isHome &&
+            !p.isFinished &&
+            !SAFE_CELLS.includes(p.position) &&
+            i !== pawn.index
+        );
+        return !(isSafe && hasNonSafeOptions);
       })
       .map((pawn) => pawn.index);
   }, [state, winner]);
@@ -180,7 +204,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     (pawnIndex: number) => {
       if (!state.hasRolledDice || winner) return;
 
-      let extraTurn = false; // Declare this variable outside setState
+      let extraTurn = false;
+      let capturedPawn = false;
 
       setState((prev) => {
         const currentPlayer = prev.currentPlayer;
@@ -198,7 +223,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             isHome: false,
             pathIndex: undefined,
           };
-          extraTurn = true; // Set the external variable
+          extraTurn = true;
         }
         // Home path movement
         else if (pawn.pathIndex !== undefined && pawn.pathIndex >= 0) {
@@ -231,10 +256,38 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
             updatedPawns[pawnIndex] = {
               ...pawn,
               position: newPosition,
-              pathIndex: 0, // Start of home path
+              pathIndex: 0,
             };
-            extraTurn = true; // Set the external variable
+            extraTurn = true;
           } else {
+            // Check for collisions
+            const isSafeCell = SAFE_CELLS.includes(newPosition);
+
+            // Check all other players' pawns for collisions
+            Object.entries(updatedPlayers).forEach(([color, otherPlayer]) => {
+              if (color === currentPlayer) return;
+
+              otherPlayer.pawns.forEach((otherPawn, otherPawnIndex) => {
+                if (
+                  !otherPawn.isHome &&
+                  !otherPawn.isFinished &&
+                  otherPawn.position === newPosition &&
+                  !isSafeCell
+                ) {
+                  // Capture the opponent's pawn
+                  updatedPlayers[color as keyof typeof updatedPlayers].pawns[
+                    otherPawnIndex
+                  ] = {
+                    ...otherPawn,
+                    position: -1,
+                    isHome: true,
+                    pathIndex: undefined,
+                  };
+                  capturedPawn = true;
+                }
+              });
+            });
+
             updatedPawns[pawnIndex] = {
               ...pawn,
               position: newPosition,
@@ -250,15 +303,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...prev,
           players: updatedPlayers,
-          hasRolledDice: !extraTurn, // Player gets another turn if they rolled 6 or entered home path
+          hasRolledDice: !extraTurn && !capturedPawn,
         };
       });
 
       setSelectedPawn(null);
       checkForWinner(state.currentPlayer);
 
-      // Use the extraTurn variable here
-      if (!extraTurn) {
+      if (!extraTurn && !capturedPawn) {
         switchPlayer();
       }
     },
@@ -289,7 +341,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     selectedPawn,
     activePawns,
     winner,
-    currentPlayer: state.currentPlayer, // Added this line
+    currentPlayer: state.currentPlayer,
   };
 
   return (
