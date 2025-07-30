@@ -34,7 +34,6 @@ export const movePawnLogic = (
   }
   // 2. Home path movement
   else if (pawn.pathIndex !== undefined) {
-    console.log("Moving on home path", pawn.pathIndex, state.diceValue);
     const homePath = HOME_PATHS[currentPlayer];
     const newStep = pawn.pathIndex + state.diceValue;
 
@@ -72,7 +71,7 @@ export const movePawnLogic = (
           updatedPawns[pawnIndex] = {
             ...pawn,
             position: homePath[stepsIntoHome - 1],
-            pathIndex: stepsIntoHome, // Now starts at 1 for first home path cell
+            pathIndex: stepsIntoHome, // Now 1-6 for home path cells
           };
           extraTurn = state.diceValue === 6;
         } else {
@@ -83,7 +82,7 @@ export const movePawnLogic = (
           };
         }
       } else {
-        // Land exactly on entrance (now index 0)
+        // Land exactly on entrance (index 0)
         updatedPawns[pawnIndex] = {
           ...pawn,
           position: homeEntrance,

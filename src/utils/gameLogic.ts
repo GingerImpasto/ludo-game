@@ -16,14 +16,14 @@ export const HOME_ENTRANCE = {
   blue: 38,
 };
 
-export const HOME_PATHS = {
-  red: [53, 54, 55, 56, 57],
-  green: [58, 59, 60, 61, 62],
-  yellow: [63, 64, 65, 66, 67],
-  blue: [68, 69, 70, 71, 72],
-};
-
 export const WINNING_POSITION = 73;
+
+export const HOME_PATHS = {
+  red: [53, 54, 55, 56, 57, WINNING_POSITION],
+  green: [58, 59, 60, 61, 62, WINNING_POSITION],
+  yellow: [63, 64, 65, 66, 67, WINNING_POSITION],
+  blue: [68, 69, 70, 71, 72, WINNING_POSITION],
+};
 
 // Safe cells configuration (unchanged)
 export const SAFE_CELLS = [
