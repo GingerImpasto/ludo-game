@@ -29,39 +29,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   background-color: white;
-  font-size: min(2vw, 1.5rem);
-  font-weight: bold;
-  color: #333;
   position: relative;
-  padding-top: 5px;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
 
-.left-area-cell > span {
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-/* Pawns container styling */
-.left-area-cell > .pawns-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2px;
-  width: 100%;
-  height: 100%;
-  padding: 5px 0;
-  overflow-y: auto;
-}
-
-/* Alternating cell colors - now based on 6 columns */
+/* Alternating cell colors */
 .left-area-cell:nth-child(12n+1),
 .left-area-cell:nth-child(12n+3),
 .left-area-cell:nth-child(12n+5),
@@ -83,10 +59,45 @@
 /* Red cell class */
 .left-area-cell.red-cell {
   background-color: #ff0000;
-  color: white;
 }
 
-.left-area-cell.highlight {
-  background-color: #ffeb3b;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+/* Star cell indication */
+.left-area-cell.star-cell::after {
+  content: "★";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  color: #ff0000;
+  opacity: 0.7;
+}
+
+/* Home entrance indication */
+.left-area-cell.home-entrance::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: #ff0000;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* Pawns container styling */
+.left-area-cell > .pawns-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
 }

@@ -44,6 +44,13 @@ export const HOME_ENTRANCE = {
   blue: 38,
 };
 
+export const STAR_CELLS = {
+  red: 48,
+  green: 9,
+  yellow: 22,
+  blue: 35,
+};
+
 export const WINNING_POSITION = 73;
 
 export const HOME_PATHS = {

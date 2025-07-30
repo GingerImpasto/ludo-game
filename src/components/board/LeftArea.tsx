@@ -1,7 +1,12 @@
 // LeftArea.tsx
 import React from "react";
 import "./LeftArea.css";
-import { gridLayout, specialCells } from "../../config/gameConfig";
+import {
+  gridLayout,
+  specialCells,
+  HOME_ENTRANCE,
+  STAR_CELLS,
+} from "../../config/gameConfig";
 import Pawn from "../game/Pawn";
 import { useBoardPawns, usePawnHandlers } from "../../utils/pawnUtils";
 import type { PawnColor } from "../game/Pawn";
@@ -17,6 +22,8 @@ const LeftArea: React.FC = () => {
         {gridLayout.leftArea.flatMap((row, rowIndex) =>
           row.map((cellNumber, colIndex) => {
             const isRed = specialCells.redNumbers.includes(cellNumber);
+            const isStarCell = cellNumber === STAR_CELLS.red;
+            const isHomeEntrance = cellNumber === HOME_ENTRANCE.red;
             const pawnsInCell = allPawns.filter(
               (pawn) => pawn.position === cellNumber
             );
@@ -24,9 +31,12 @@ const LeftArea: React.FC = () => {
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`left-area-cell ${isRed ? "red-cell" : ""}`}
+                className={`left-area-cell 
+                  ${isRed ? "red-cell" : ""}
+                  ${isStarCell ? "star-cell" : ""}
+                  ${isHomeEntrance ? "home-entrance" : ""}
+                `}
               >
-                {cellNumber}
                 {pawnsInCell.map((pawn) => {
                   const isCurrentPlayer = pawn.player === currentPlayer;
                   const isActive = activePawns.includes(pawn.index);
