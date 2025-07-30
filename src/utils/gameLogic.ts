@@ -170,24 +170,20 @@ export const movePawnLogic = (
       isHome: false,
       pathIndex: undefined,
     };
-    extraTurn = true; // Grant extra turn for rolling a 6
+    extraTurn = true;
   }
   // 2. Home path movement
-  else if (pawn.pathIndex !== undefined || pawn.position === HOME_ENTRANCE[currentPlayer]) {
+  else if (pawn.pathIndex !== undefined) {
     const homePath = HOME_PATHS[currentPlayer];
-    const currentStep = pawn.position === HOME_ENTRANCE[currentPlayer] 
-      ? 0
-      : (pawn.pathIndex || 0) + 1;
+    const newStep = (pawn.pathIndex || 0) + state.diceValue;
 
-    const newStep = currentStep + state.diceValue;
-
-    if (newStep <= homePath.length) {
+    if (newStep < homePath.length) {
       updatedPawns[pawnIndex] = {
         ...pawn,
-        position: homePath[newStep - 1],
-        pathIndex: newStep - 1,
+        position: homePath[newStep],
+        pathIndex: newStep,
       };
-      extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
+      extraTurn = state.diceValue === 6;
     } else {
       updatedPawns[pawnIndex] = {
         ...pawn,
@@ -196,35 +192,28 @@ export const movePawnLogic = (
       };
     }
   }
-  // 3. Regular board movement
+  // 3. Regular board movement (including home entrance)
   else {
     let newPosition = pawn.position + state.diceValue;
     const homeEntrance = HOME_ENTRANCE[currentPlayer];
+    const homePath = HOME_PATHS[currentPlayer];
 
-    if (newPosition > 52) newPosition -= 52;
+    // Check if we're passing or landing on home entrance
+    const willPassEntrance = pawn.position < homeEntrance && newPosition >= homeEntrance;
+    const isExactlyAtEntrance = newPosition === homeEntrance;
 
-    if (pawn.position < homeEntrance && newPosition >= homeEntrance) {
+    if (willPassEntrance || isExactlyAtEntrance) {
       const stepsToEntrance = homeEntrance - pawn.position;
       const stepsIntoHome = state.diceValue - stepsToEntrance;
 
-      if (stepsIntoHome === 0) {
-        // Land exactly on entrance
-        updatedPawns[pawnIndex] = {
-          ...pawn,
-          position: homeEntrance,
-          pathIndex: 0,
-        };
-        extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
-      } 
-      else if (stepsIntoHome > 0) {
-        const homePath = HOME_PATHS[currentPlayer];
+      if (stepsIntoHome > 0) {
         if (stepsIntoHome <= homePath.length) {
           updatedPawns[pawnIndex] = {
             ...pawn,
             position: homePath[stepsIntoHome - 1],
             pathIndex: stepsIntoHome - 1,
           };
-          extraTurn = state.diceValue === 6; // Grant extra turn for rolling a 6
+          extraTurn = state.diceValue === 6;
         } else {
           updatedPawns[pawnIndex] = {
             ...pawn,
@@ -232,9 +221,20 @@ export const movePawnLogic = (
             position: WINNING_POSITION,
           };
         }
+      } else {
+        // Land exactly on entrance
+        updatedPawns[pawnIndex] = {
+          ...pawn,
+          position: homeEntrance,
+          pathIndex: 0,
+        };
+        extraTurn = state.diceValue === 6;
       }
     } 
     else {
+      // Normal board movement with wrap-around
+      if (newPosition > 52) newPosition -= 52;
+
       updatedPawns[pawnIndex] = {
         ...pawn,
         position: newPosition,
@@ -261,7 +261,7 @@ export const movePawnLogic = (
           });
         });
       }
-      extraTurn = state.diceValue === 6 || capturedPawn; // Grant extra turn for rolling a 6 or capturing
+      extraTurn = state.diceValue === 6 || capturedPawn;
     }
   }
 
@@ -273,8 +273,8 @@ export const movePawnLogic = (
 
   return {
     players: updatedPlayers,
-    hasRolledDice: !(extraTurn || capturedPawn), // Turn ends unless extra turn was granted
-    extraTurn: extraTurn || capturedPawn, // Reflects if an extra turn was granted
+    hasRolledDice: !(extraTurn || capturedPawn),
+    extraTurn: extraTurn || capturedPawn,
     capturedPawn,
   };
 };
