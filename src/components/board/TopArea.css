@@ -58,12 +58,14 @@
 .top-area-cell.star-cell::after {
   content: "★";
   position: absolute;
-  top: 50%;
+  bottom: 2px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.8rem;
+  transform: translateX(-50%);
+  font-size: 2.5rem; /* Increased from 1.5rem */
   color: #33CC33;
   opacity: 0.7;
+  z-index: 1;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); /* Added subtle shadow for better visibility */
 }
 
 /* Home entrance indication */
@@ -93,4 +95,10 @@
   gap: 2px;
   width: 100%;
   height: 100%;
+}
+
+/* Individual pawns */
+.top-area-cell .pawn {
+  position: relative;
+  z-index: 3;
 }

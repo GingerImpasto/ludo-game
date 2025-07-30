@@ -73,7 +73,7 @@
   content: "";
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   bottom: 0;
   width: 5px;
   background-color: #3366FF;
@@ -89,7 +89,7 @@
 
 /* Highlight cell */
 .bottom-area-cell.highlight {
-  background-color: #ffeb3b;
+  background-color: #3366FF;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
 }
 
