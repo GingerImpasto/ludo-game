@@ -14,8 +14,8 @@
 
 .bottom-area-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Changed to 3 columns */
-  grid-template-rows: repeat(6, minmax(0, 1fr)); /* Changed to 6 rows */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   width: 100%;
   height: 100%;
   min-width: 0;
@@ -30,16 +30,13 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  border: none;
-  font-size: min(2vw, 1.5rem);
-  font-weight: bold;
-  color: #333;
+  position: relative;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
 
-/* Updated alternating cell colors for 6x3 grid */
+/* Alternating cell colors */
 .bottom-area-cell:nth-child(6n+1),
 .bottom-area-cell:nth-child(6n+3),
 .bottom-area-cell:nth-child(6n+5) {
@@ -52,14 +49,65 @@
   background-color: #e0e0e0;
 }
 
-/* Highlight cell example */
+/* Blue cells */
+.bottom-area-cell.blue-cell {
+  background-color: #3366FF;
+}
+
+/* Larger star cell indicator at bottom */
+.bottom-area-cell.star-cell::after {
+  content: "★";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem; /* Increased from 1.5rem */
+  color: #3366FF;
+  opacity: 0.7;
+  z-index: 1;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); /* Added subtle shadow for better visibility */
+}
+
+/* Home entrance indicator */
+.bottom-area-cell.home-entrance::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: #3366FF;
+  animation: pulse 2s infinite;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* Highlight cell */
 .bottom-area-cell.highlight {
   background-color: #ffeb3b;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
 }
 
-/* Blue cells */
-.bottom-area-cell.blue-cell {
-  background-color: #3366FF;
-  color: white;
+/* Pawns container */
+.bottom-area-cell > .pawns-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Individual pawns */
+.bottom-area-cell .pawn {
+  position: relative;
+  z-index: 3;
 }
