@@ -7,19 +7,14 @@ import React, {
   useMemo,
 } from "react";
 import {
-  START_POSITIONS,
-  HOME_ENTRANCE,
-  HOME_PATHS,
-  WINNING_POSITION,
-  SAFE_CELLS,
   getInitialGameState,
   rollDice as rollDiceLogic,
   getActivePawns,
   checkForWinner as checkForWinnerLogic,
   getNextPlayer,
-  movePawnLogic,
 } from "../utils/gameLogic";
-import type { PlayerState, GameState } from "../utils/gameLogic";
+import { movePawnLogic } from "../utils/moveLogic";
+import type { GameState } from "../utils/gameLogic";
 
 // ... rest of the file remains the same
 
