@@ -57,9 +57,156 @@ const BoardCenter: React.FC = () => {
             <Pawn color="red" position="board" />
           </div>
         </div>
-        <div className="color-arrow green"></div>
-        <div className="color-arrow yellow"></div>
-        <div className="color-arrow blue"></div>
+        <div className="color-arrow green">
+          <div
+            style={{
+              position: "absolute",
+              left: "30%", // Adjusted to position at 10% 50% of the triangle
+              top: "10%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="green" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "50%", // Adjusted to position at 10% 50% of the triangle
+              top: "10%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="green" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "70%", // Adjusted to position at 10% 50% of the triangle
+              top: "10%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="green" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "50%", // Adjusted to position at 10% 50% of the triangle
+              top: "30%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="green" position="board" />
+          </div>
+        </div>
+        <div className="color-arrow yellow">
+          <div
+            style={{
+              position: "absolute",
+              left: "90%", // Adjusted to position at 10% 50% of the triangle
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="yellow" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "90%", // Adjusted to position at 10% 50% of the triangle
+              top: "25%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="yellow" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "90%", // Adjusted to position at 10% 50% of the triangle
+              top: "75%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="yellow" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "75%", // Adjusted to position at 10% 50% of the triangle
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="yellow" position="board" />
+          </div>
+        </div>
+        <div className="color-arrow blue">
+          <div
+            style={{
+              position: "absolute",
+              left: "30%", // Adjusted to position at 10% 50% of the triangle
+              top: "90%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="blue" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "50%", // Adjusted to position at 10% 50% of the triangle
+              top: "90%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="blue" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "70%", // Adjusted to position at 10% 50% of the triangle
+              top: "90%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="blue" position="board" />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "50%", // Adjusted to position at 10% 50% of the triangle
+              top: "70%",
+              transform: "translate(-50%, -50%)",
+              width: "20%", // Adjust size as needed
+              height: "20%", // Adjust size as needed
+            }}
+          >
+            <Pawn color="blue" position="board" />
+          </div>
+        </div>
       </div>
     </div>
   );
