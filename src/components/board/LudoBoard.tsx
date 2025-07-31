@@ -8,11 +8,11 @@ import RightArea from "./RightArea";
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
 import DiceControls from "../game/DiceControls";
-import { useGame } from "../../context/GameContext";
+//import { useGame } from "../../context/GameContext";
 
 const LudoBoard: React.FC = () => {
-  const { state } = useGame();
-  const { currentPlayer } = state;
+  //const { state } = useGame();
+  //const { currentPlayer } = state;
 
   return (
     <div className="ludo-container">
