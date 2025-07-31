@@ -2,8 +2,17 @@
 import React from "react";
 import "./BoardCenter.css";
 import ColorTriangle from "./ColorTriangle";
+import { useGame } from "../../context/GameContext";
 
 const BoardCenter: React.FC = () => {
+  const { state } = useGame();
+
+  // Get the number of finished pawns for each color
+  const getFinishedPawnsCount = (color: keyof typeof state.players) => {
+    return state.players[color].pawns.filter((p) => p.isFinished).length;
+  };
+
+  // Positions for each pawn (we'll only use as many as are finished)
   const redPawnPositions = [
     { left: "10%", top: "50%" },
     { left: "10%", top: "25%" },
@@ -35,10 +44,34 @@ const BoardCenter: React.FC = () => {
   return (
     <div className="center-square">
       <div className="center-colors">
-        <ColorTriangle color="red" pawnPositions={redPawnPositions} />
-        <ColorTriangle color="green" pawnPositions={greenPawnPositions} />
-        <ColorTriangle color="yellow" pawnPositions={yellowPawnPositions} />
-        <ColorTriangle color="blue" pawnPositions={bluePawnPositions} />
+        <ColorTriangle
+          color="red"
+          pawnPositions={redPawnPositions.slice(
+            0,
+            getFinishedPawnsCount("red")
+          )}
+        />
+        <ColorTriangle
+          color="green"
+          pawnPositions={greenPawnPositions.slice(
+            0,
+            getFinishedPawnsCount("green")
+          )}
+        />
+        <ColorTriangle
+          color="yellow"
+          pawnPositions={yellowPawnPositions.slice(
+            0,
+            getFinishedPawnsCount("yellow")
+          )}
+        />
+        <ColorTriangle
+          color="blue"
+          pawnPositions={bluePawnPositions.slice(
+            0,
+            getFinishedPawnsCount("blue")
+          )}
+        />
       </div>
     </div>
   );
