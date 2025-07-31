@@ -37,18 +37,27 @@ export const movePawnLogic = (
     const homePath = HOME_PATHS[currentPlayer];
     const newStep = pawn.pathIndex + state.diceValue;
 
-    if (newStep <= homePath.length) {
+    if (newStep < homePath.length) {
       updatedPawns[pawnIndex] = {
         ...pawn,
         position: homePath[newStep - 1],
         pathIndex: newStep,
       };
       extraTurn = state.diceValue === 6;
-    } else {
+    } 
+    else if (newStep === homePath.length) {
       updatedPawns[pawnIndex] = {
         ...pawn,
         isFinished: true,
         position: WINNING_POSITION,
+      };
+    }
+    else {
+      // Don't move if it would go past the winning position
+      updatedPawns[pawnIndex] = {
+        ...pawn,
+        position: homePath[homePath.length - 1],
+        pathIndex: homePath.length,
       };
     }
   }
@@ -67,18 +76,27 @@ export const movePawnLogic = (
       const stepsIntoHome = state.diceValue - stepsToEntrance;
 
       if (stepsIntoHome > 0) {
-        if (stepsIntoHome <= homePath.length) {
+        if (stepsIntoHome < homePath.length) {
           updatedPawns[pawnIndex] = {
             ...pawn,
             position: homePath[stepsIntoHome - 1],
-            pathIndex: stepsIntoHome, // Now 1-6 for home path cells
+            pathIndex: stepsIntoHome,
           };
           extraTurn = state.diceValue === 6;
-        } else {
+        } 
+        else if (stepsIntoHome === homePath.length) {
           updatedPawns[pawnIndex] = {
             ...pawn,
             isFinished: true,
             position: WINNING_POSITION,
+          };
+        }
+        else {
+          // Don't move if it would go past the winning position
+          updatedPawns[pawnIndex] = {
+            ...pawn,
+            position: homePath[homePath.length - 1],
+            pathIndex: homePath.length,
           };
         }
       } else {
@@ -86,7 +104,7 @@ export const movePawnLogic = (
         updatedPawns[pawnIndex] = {
           ...pawn,
           position: homeEntrance,
-          pathIndex: 0, // Entrance is now index 0
+          pathIndex: 0,
         };
         extraTurn = state.diceValue === 6;
       }
